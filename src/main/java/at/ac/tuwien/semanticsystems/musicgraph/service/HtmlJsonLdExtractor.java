@@ -18,6 +18,9 @@ public class HtmlJsonLdExtractor {
 
     public JSONObject loadJsonLdByUrl(String resourceUri) {
         String html = httpClient.get(resourceUri);
+        if (html == null) {
+            return null;
+        }
         String jsonLd = extractJsonLdFromHtml(html);
         JSONObject json = new JSONObject(jsonLd);
         return json;
@@ -34,26 +37,26 @@ public class HtmlJsonLdExtractor {
     }
 
     public Model discogsModel(JSONObject json) {
-        JSONObject neededJson = new JSONObject();
-        neededJson.put("name", json.get("name"));
-        neededJson.put("@id", json.get("@id"));
-        neededJson.put("@context", json.get("@context"));
-        neededJson.put("@type", json.get("@type"));
-        neededJson.put("releaseOf", json.get("releaseOf"));
+        JSONObject neededJson = copyOptionalFields(json,
+                "name", "@id", "@context", "@type", "releaseOf");
         return jsonToModel(neededJson, "https://www.discogs.com/");
     }
 
     public Model musicbrainzModel(JSONObject json) {
-        JSONObject neededJson = new JSONObject();
-        neededJson.put("name", json.get("name"));
-        neededJson.put("@id", json.get("@id"));
-        neededJson.put("@context", json.get("@context"));
-        neededJson.put("@type", json.get("@type"));
-        neededJson.put("releaseOf", json.get("releaseOf"));
-        neededJson.put("sameAs", json.get("sameAs"));
-        neededJson.put("creditedTo", json.get("creditedTo"));
+        JSONObject neededJson = copyOptionalFields(json,
+                "name", "@id", "@context", "@type", "releaseOf", "sameAs", "creditedTo");
         return jsonToModel(neededJson, "https://musicbrainz.org/");
 
+    }
+
+    private JSONObject copyOptionalFields(JSONObject obj, String... fields) {
+        JSONObject json = new JSONObject();
+        for (String field: fields) {
+            if (obj.has(field)) {
+                json.put(field, obj.get(field));
+            }
+        }
+        return json;
     }
 
     public Model jsonToModel(JSONObject json, String baseUri) {
@@ -62,8 +65,6 @@ public class HtmlJsonLdExtractor {
         InputStream stream = new ByteArrayInputStream(jsonLd.getBytes(StandardCharsets.UTF_8));
         model.read(stream, baseUri, "JSON-LD");
 
-        // TODO: Remove me
-        model.write(System.out, "TURTLE");
         return model;
     }
 }

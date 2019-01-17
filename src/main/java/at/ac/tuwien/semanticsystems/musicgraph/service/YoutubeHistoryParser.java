@@ -18,9 +18,9 @@ public class YoutubeHistoryParser {
     private final static String SEARCH_STRING = "<a href=\"https://www.youtube.com/watch?v=";
     private final static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
 
-    public void parseFile(String path) throws IOException {
+    public List<YoutubeVideo> parseFile(String path) throws IOException {
         String fileContent = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
-        List<YoutubeVideo> videoTitles = new LinkedList<>();
+        List<YoutubeVideo> videos = new LinkedList<>();
 
         while (fileContent.contains(SEARCH_STRING)) {
             int posStart = fileContent.indexOf(SEARCH_STRING);
@@ -40,9 +40,11 @@ public class YoutubeHistoryParser {
             }
 
             YoutubeVideo video = new YoutubeVideo(title, viewDate);
-            videoTitles.add(video);
+            videos.add(video);
             fileContent = fileContent.substring(posEnd);
         }
+
+        return videos;
 
     }
 
