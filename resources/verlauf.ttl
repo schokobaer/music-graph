@@ -1,0 +1,351 @@
+@prefix rr:    <http://www.w3.org/ns/r2rml#> .
+@prefix schema: <http://schema.org/> .
+@prefix grddl: <http://www.w3.org/2003/g/data-view#> .
+@prefix gldp:  <http://www.w3.org/ns/people#> .
+@prefix wdr:   <http://www.w3.org/2007/05/powder#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix xhv:   <http://www.w3.org/1999/xhtml/vocab#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ht:    <http://www.w3.org/2006/http#> .
+@prefix rif:   <http://www.w3.org/2007/rif#> .
+@prefix sd:    <http://www.w3.org/ns/sparql-service-description#> .
+@prefix qb:    <http://purl.org/linked-data/cube#> .
+@prefix ma:    <http://www.w3.org/ns/ma-ont#> .
+@prefix cat:   <http://www.w3.org/ns/dcat#> .
+@prefix rdfa:  <http://www.w3.org/ns/rdfa#> .
+@prefix og:    <http://ogp.me/ns#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dcat:  <http://www.w3.org/ns/dcat#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix sioc:  <http://rdfs.org/sioc/ns#> .
+@prefix cc:    <http://creativecommons.org/ns#> .
+@prefix rev:   <http://purl.org/stuff/rev#> .
+@prefix void:  <http://rdfs.org/ns/void#> .
+@prefix skosxl: <http://www.w3.org/2008/05/skos-xl#> .
+@prefix org:   <http://www.w3.org/ns/org#> .
+@prefix cnt:   <http://www.w3.org/2008/content#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix gr:    <http://purl.org/goodrelations/v1#> .
+@prefix ptr:   <http://www.w3.org/2009/pointers#> .
+@prefix ical:  <http://www.w3.org/2002/12/cal/icaltzd#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix v:     <http://rdf.data-vocabulary.org/#> .
+@prefix wdrs:  <http://www.w3.org/2007/05/powder-s#> .
+@prefix earl:  <http://www.w3.org/ns/earl#> .
+@prefix ctag:  <http://commontag.org/ns#> .
+@prefix dc:    <http://purl.org/dc/terms/> .
+
+<https://musicbrainz.org/release-group/3a9a3b57-2d45-45c0-8f44-60268dc86960>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "80 Millionen" .
+
+<https://www.discogs.com/Wir-Sind-Helden-Denkmal/release/377171>
+        a                 schema:MusicRelease ;
+        schema:name       "Denkmal" ;
+        schema:releaseOf  <https://www.discogs.com/master/view/0> .
+
+<https://musicbrainz.org/release/5c7f81d7-a0a3-4b74-8f4a-8240912d90f8>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Nico Santos" ;
+        schema:name        "Nico Santos - Safe (Official Video)" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/a8ff0d8c-5e8c-4046-a346-3018e91a6a10> .
+
+<https://musicbrainz.org/release/205a1f58-ef44-40a8-a0a0-7656b5823882>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Josh." ;
+        schema:name        "Cordula Grün." ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/6af4ca0b-f17f-4db0-a4c5-76fcd63b0e74> ;
+        schema:sameAs      <https://www.amazon.de/gp/product/B07FY6FKVS> .
+
+<https://musicbrainz.org/release/b8271ad8-69f3-407a-a734-fed23f6aba00>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Bob Marley & The Wailers" ;
+        schema:name        "Three Little Birds" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/8369c54f-a335-448f-ab73-a0757b888150> .
+
+<https://www.discogs.com/Ibo-Sowieso/release/7860077>
+        a                 schema:MusicRelease ;
+        schema:name       "Sowieso" ;
+        schema:releaseOf  <https://www.discogs.com/master/view/852215> .
+
+<https://musicbrainz.org/release/7cd33f77-a104-4db2-a1de-6915f95a674d>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Klangkarussell" ;
+        schema:name        "Sonnentanz" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/5175542d-0cc0-4491-ab63-8c8cc960f9ce> .
+
+<https://musicbrainz.org/release-group/a3b0e1fc-d119-3420-898f-c9423d60ca84>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "What’s Up?" ;
+        schema:sameAs               <https://rateyourmusic.com/release/single/4_non_blondes/whats_up____the_train/> , <https://www.discogs.com/master/81228> , <https://www.wikidata.org/wiki/Q2604122> .
+
+<https://musicbrainz.org/release/3c79eb7e-4943-4db2-b5d0-094e979b4707>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Amsterdam" ;
+        schema:name        "Marie Marie" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/f91c3f29-da56-4028-8b7e-76c2b914c30f> .
+
+<https://musicbrainz.org/release/a0217e36-4b9f-4c07-9f82-49c047f59236>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Johannes Heesters" ;
+        schema:name        "Heut geh ich ins Maxim" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/68052dc4-759d-43cc-ae72-3f474a5fb483> ;
+        schema:sameAs      <https://www.discogs.com/release/2974004> , <https://www.amazon.de/gp/product/B000BX369S> .
+
+<https://www.discogs.com/artist/948071-Barış-Manço>
+        a            schema:MusicGroup ;
+        schema:name  "Barış Manço" .
+
+<https://www.discogs.com/Bar%C4%B1s-Man%C3%A7o-Jenny-Jenny/release/2067412>
+        a                 schema:MusicRelease ;
+        schema:name       "Jenny Jenny" ;
+        schema:releaseOf  <https://www.discogs.com/master/view/0> .
+
+<https://musicbrainz.org/release-group/f91c3f29-da56-4028-8b7e-76c2b914c30f>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Marie Marie" .
+
+<https://musicbrainz.org/release/b0f2696a-ded0-4ed0-8b91-4bc33abd55c7>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Wanda" ;
+        schema:name        "Columbo" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/25cc70d8-a716-4ac5-945d-40cb40dcac60> .
+
+<https://musicbrainz.org/release/a40b23f7-cf28-452f-ac31-35638ab8a867>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Alan Menken" ;
+        schema:name        "Pocahontas" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/a050baa3-baac-4b48-ac5f-2b8af750fa43> .
+
+<https://musicbrainz.org/release/014d17e9-9cff-40dc-8e67-74d4da26242f>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Red Hot Chili Peppers" ;
+        schema:name        "Red Hot Chili Peppers" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/cb453955-e748-31c2-91e6-db01681886a5> .
+
+<https://musicbrainz.org/release/214e0736-9633-397d-b317-124779df1a69>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "4 Non Blondes" ;
+        schema:name        "What’s Up?" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/a3b0e1fc-d119-3420-898f-c9423d60ca84> ;
+        schema:sameAs      <https://www.amazon.com/gp/product/B000056XHA> , <https://www.discogs.com/release/1179251> .
+
+<https://musicbrainz.org/release-group/87871a00-3d1c-33b5-bfc1-b991e618f17c>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/AlbumRelease" ;
+        schema:name                 "Barfuß am Strand" .
+
+<https://musicbrainz.org/release-group/6af4ca0b-f17f-4db0-a4c5-76fcd63b0e74>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Cordula Grün." .
+
+<https://musicbrainz.org/release/b0de378e-65ae-4948-aa42-fc1fccd70cb8>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Nordseemusikanten" ;
+        schema:name        "Barfuß am Strand" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/87871a00-3d1c-33b5-bfc1-b991e618f17c> ;
+        schema:sameAs      <https://www.amazon.de/gp/product/B00005Q6EN> .
+
+<https://musicbrainz.org/release-group/8369c54f-a335-448f-ab73-a0757b888150>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Three Little Birds" .
+
+<https://musicbrainz.org/release/c2776223-055f-4008-8e8c-b235022bb674>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Max Giesinger" ;
+        schema:name        "80 Millionen" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/3a9a3b57-2d45-45c0-8f44-60268dc86960> ;
+        schema:sameAs      <https://www.amazon.de/gp/product/B01BIGPE0K> .
+
+<https://musicbrainz.org/release/8749f003-7901-47af-a6ee-c7927636e6c5>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Wise Guys" ;
+        schema:name        "Früher" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/3b66f80c-8cbd-3c04-8c15-b2c2b9c6d344> ;
+        schema:sameAs      <https://www.amazon.de/gp/product/B00023BI6A> .
+
+<https://musicbrainz.org/release-group/a050baa3-baac-4b48-ac5f-2b8af750fa43>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/SoundtrackAlbum" ;
+        schema:albumReleaseType     "http://schema.org/AlbumRelease" ;
+        schema:name                 "Pocahontas" .
+
+<https://musicbrainz.org/release/0da6daf1-6499-41b7-8e74-ff287a9807a4>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Ibo" ;
+        schema:name        "Sowieso" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/cf5e4cf0-85e1-31ae-aaf7-7bee65619319> ;
+        schema:sameAs      <https://www.amazon.de/gp/product/B000091OOS> , <https://www.discogs.com/release/7860077> .
+
+<https://musicbrainz.org/release/f8e5c30e-aa62-430a-90db-5377e2ca98aa>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Gestört aber GeiL" ;
+        schema:name        "Gestört aber GeiL" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/16cf2a05-2411-428d-bae6-1cb365fa082e> ;
+        schema:sameAs      <https://www.amazon.de/gp/product/B014VLVTJY> .
+
+<https://musicbrainz.org/release-group/cb453955-e748-31c2-91e6-db01681886a5>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/AlbumRelease" ;
+        schema:name                 "The Red Hot Chili Peppers" ;
+        schema:sameAs               <https://www.wikidata.org/wiki/Q330725> , <https://www.discogs.com/master/42499> , <https://en.wikipedia.org/wiki/The_Red_Hot_Chili_Peppers_(album)> , <http://www.allmusic.com/album/mw0000201634> .
+
+<https://musicbrainz.org/release-group/3b66f80c-8cbd-3c04-8c15-b2c2b9c6d344>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Früher" .
+
+<https://musicbrainz.org/release/3b069e01-3b84-477c-8f1b-7515ff95865e>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Barış Manço" ;
+        schema:name        "Jenny Jenny" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/362251da-a01e-429e-bacf-a28d8fcf6291> ;
+        schema:sameAs      <https://www.discogs.com/release/2067412> .
+
+<https://musicbrainz.org/release/25a59472-29af-48c2-bcda-5cdec8266e84>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Wir sind Helden" ;
+        schema:name        "Denkmal" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/f1da0b39-0050-3f23-b6ef-739a8dc0b030> ;
+        schema:sameAs      <https://www.discogs.com/release/377171> , <https://www.amazon.de/gp/product/B0000ZFYVU> .
+
+<https://musicbrainz.org/release-group/1a55e241-b3da-41d6-90c4-f1b1bfdf6e3a>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/AlbumRelease" ;
+        schema:name                 "Nicht Nichts" .
+
+<https://www.discogs.com/4-Non-Blondes-Whats-Up/release/1179251>
+        a                 schema:MusicRelease ;
+        schema:name       "What's Up?" ;
+        schema:releaseOf  <https://www.discogs.com/master/view/81228> .
+
+<https://musicbrainz.org/release-group/68052dc4-759d-43cc-ae72-3f474a5fb483>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Heut geh ich ins Maxim" .
+
+<https://musicbrainz.org/release-group/362251da-a01e-429e-bacf-a28d8fcf6291>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Jenny Jenny" .
+
+<https://musicbrainz.org/release-group/a8ff0d8c-5e8c-4046-a346-3018e91a6a10>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Nico Santos - Safe (Official Video)" .
+
+<https://musicbrainz.org/release/37a05cf8-1159-417f-b48d-30823465e796>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Bob Dylan" ;
+        schema:name        "Mr. Tambourine Man" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/784297d5-d9c0-3738-8f39-0a41b5959957> .
+
+<https://www.discogs.com/master/view/0>
+        a                     schema:MusicAlbum ;
+        schema:byArtist       <https://www.discogs.com/artist/948071-Barış-Manço> , <https://www.discogs.com/artist/144005-Wir-Sind-Helden> ;
+        schema:datePublished  "1965"^^schema:Date , "2004"^^schema:Date ;
+        schema:name           "Jenny Jenny" , "Denkmal" ;
+        schema:numTracks      2 , 5 .
+
+<https://musicbrainz.org/release-group/cf5e4cf0-85e1-31ae-aaf7-7bee65619319>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/AlbumRelease" ;
+        schema:name                 "Sowieso" ;
+        schema:sameAs               <https://www.discogs.com/master/852215> .
+
+<https://musicbrainz.org/release-group/f1da0b39-0050-3f23-b6ef-739a8dc0b030>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Denkmal" .
+
+<https://www.discogs.com/master/view/852215>
+        a                     schema:MusicAlbum ;
+        schema:byArtist       <https://www.discogs.com/artist/327215-Ibo-2> ;
+        schema:datePublished  "1990"^^schema:Date ;
+        schema:name           "Sowieso" ;
+        schema:numTracks      11 .
+
+<https://www.discogs.com/artist/198591-4-Non-Blondes>
+        a            schema:MusicGroup ;
+        schema:name  "4 Non Blondes" .
+
+<https://musicbrainz.org/release-group/784297d5-d9c0-3738-8f39-0a41b5959957>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/CompilationAlbum" ;
+        schema:albumReleaseType     "http://schema.org/AlbumRelease" ;
+        schema:name                 "Mr. Tambourine Man" .
+
+<https://www.discogs.com/artist/327215-Ibo-2>
+        a            schema:MusicGroup ;
+        schema:name  "Ibo (2)" .
+
+<https://musicbrainz.org/release-group/5175542d-0cc0-4491-ab63-8c8cc960f9ce>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Sonnentanz" ;
+        schema:sameAs               <https://www.discogs.com/master/479489> , <https://www.wikidata.org/wiki/Q14756048> .
+
+<https://www.discogs.com/artist/144005-Wir-Sind-Helden>
+        a            schema:MusicGroup ;
+        schema:name  "Wir Sind Helden" .
+
+<https://musicbrainz.org/release-group/361a28b7-4588-44a6-8c96-86c1efb8258f>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Bohemian Rhapsody" ;
+        schema:sameAs               <https://www.wikidata.org/wiki/Q187745> , <https://www.discogs.com/master/5967> , <https://rateyourmusic.com/release/single/queen/bohemian-rhapsody-im-in-love-with-my-car-1/> .
+
+<https://www.discogs.com/master/view/81228>
+        a                     schema:MusicAlbum ;
+        schema:byArtist       <https://www.discogs.com/artist/198591-4-Non-Blondes> ;
+        schema:datePublished  "1993"^^schema:Date ;
+        schema:name           "What's Up?" ;
+        schema:numTracks      4 .
+
+<https://musicbrainz.org/release-group/16cf2a05-2411-428d-bae6-1cb365fa082e>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/AlbumRelease" ;
+        schema:name                 "Gestört aber GeiL" .
+
+<https://musicbrainz.org/release-group/25cc70d8-a716-4ac5-945d-40cb40dcac60>
+        a                           schema:MusicAlbum ;
+        schema:albumProductionType  "http://schema.org/StudioAlbum" ;
+        schema:albumReleaseType     "http://schema.org/SingleRelease" ;
+        schema:name                 "Columbo" .
+
+<https://musicbrainz.org/release/10117d2c-8ab6-3e09-977c-1ebd5b68bde2>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Queen" ;
+        schema:name        "Bohemian Rhapsody" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/361a28b7-4588-44a6-8c96-86c1efb8258f> .
+
+<https://musicbrainz.org/release/17b8d9bd-75a9-491f-a47c-52336c37cdfa>
+        a                  schema:MusicRelease ;
+        schema:creditedTo  "Trucks" ;
+        schema:name        "Nicht Nichts" ;
+        schema:releaseOf   <https://musicbrainz.org/release-group/1a55e241-b3da-41d6-90c4-f1b1bfdf6e3a> .
