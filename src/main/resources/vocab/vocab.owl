@@ -1,0 +1,181 @@
+@prefix : <http://semantics.tuwien.ac.at/group4#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@base <http://semantics.tuwien.ac.at/group4> .
+
+<http://semantics.tuwien.ac.at/group4> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://semantics.tuwien.ac.at/group4#clickedAt
+:clickedAt rdf:type owl:ObjectProperty ;
+           owl:equivalentProperty :listenedAt ;
+           rdf:type owl:FunctionalProperty ;
+           rdfs:domain :YoutubeVideo ;
+           rdfs:range [ rdf:type owl:Restriction ;
+                        owl:onProperty owl:topDataProperty ;
+                        owl:someValuesFrom xsd:dateTimeStamp
+                      ] ;
+           rdfs:comment "Timestamp of when a resource was clicked" ;
+           rdfs:label "clicked at" .
+
+
+###  http://semantics.tuwien.ac.at/group4#fromDecade
+:fromDecade rdf:type owl:ObjectProperty ,
+                     owl:FunctionalProperty ;
+            rdfs:domain :Song ,
+                        :YoutubeVideo ;
+            rdfs:range :Decade .
+
+
+###  http://semantics.tuwien.ac.at/group4#isSimilar
+:isSimilar rdf:type owl:ObjectProperty ,
+                    owl:SymmetricProperty ,
+                    owl:TransitiveProperty ;
+           rdfs:domain :Artist ;
+           rdfs:range :Artist ;
+           rdfs:comment "An artist makes similar music to an other artist" ;
+           rdfs:label "is similar " .
+
+
+###  http://semantics.tuwien.ac.at/group4#listenedAt
+:listenedAt rdf:type owl:ObjectProperty ,
+                     owl:FunctionalProperty ;
+            rdfs:domain :Song ;
+            rdfs:range [ rdf:type owl:Restriction ;
+                         owl:onProperty owl:topDataProperty ;
+                         owl:someValuesFrom xsd:dateTimeStamp
+                       ] ;
+            rdfs:comment "Timestamp of when a song was listened" ;
+            rdfs:label "listenedAt" .
+
+
+###  http://semantics.tuwien.ac.at/group4#numberListenings
+:numberListenings rdf:type owl:ObjectProperty ,
+                           owl:FunctionalProperty ;
+                  rdfs:domain :Song ;
+                  rdfs:range [ rdf:type owl:Restriction ;
+                               owl:onProperty owl:topDataProperty ;
+                               owl:someValuesFrom xsd:unsignedInt
+                             ] ;
+                  rdfs:comment "Amount of listenings of the song by the user" ;
+                  rdfs:label "number listenings" .
+
+
+###  http://semantics.tuwien.ac.at/group4#numberViews
+:numberViews rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf owl:topObjectProperty ;
+             rdf:type owl:FunctionalProperty ;
+             rdfs:domain :YoutubeVideo ;
+             rdfs:range [ rdf:type owl:Restriction ;
+                          owl:onProperty owl:topDataProperty ;
+                          owl:someValuesFrom xsd:unsignedInt
+                        ] ;
+             rdfs:comment "Amount of views of the video by the user" ;
+             rdfs:label "number views" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://semantics.tuwien.ac.at/group4#AmazonMusicSong
+:AmazonMusicSong rdf:type owl:Class ;
+                 rdfs:subClassOf :Song .
+
+
+###  http://semantics.tuwien.ac.at/group4#Artist
+:Artist rdf:type owl:Class ;
+        rdfs:comment "Class for artists (performing songs)" ;
+        rdfs:label "Artist" .
+
+
+###  http://semantics.tuwien.ac.at/group4#Decade
+:Decade rdf:type owl:Class .
+
+
+###  http://semantics.tuwien.ac.at/group4#Song
+:Song rdf:type owl:Class ;
+      rdfs:comment "Class for songs" ;
+      rdfs:label "Song" .
+
+
+###  http://semantics.tuwien.ac.at/group4#SpotifySong
+:SpotifySong rdf:type owl:Class ;
+             rdfs:subClassOf :AmazonMusicSong ;
+             rdfs:comment "Class for Spotify songs" ;
+             rdfs:label "Spotify Song" .
+
+
+###  http://semantics.tuwien.ac.at/group4#YoutubeSongVideo
+:YoutubeSongVideo rdf:type owl:Class ;
+                  rdfs:subClassOf :Song ,
+                                  :YoutubeVideo .
+
+
+###  http://semantics.tuwien.ac.at/group4#YoutubeVideo
+:YoutubeVideo rdf:type owl:Class ;
+              rdfs:comment "Class for Youtube videos"@en ;
+              rdfs:label "Youtube Video" .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://semantics.tuwien.ac.at/group4#00
+<http://semantics.tuwien.ac.at/group4#00> rdf:type owl:NamedIndividual ,
+                                                   :Decade ;
+                                          rdfs:comment "Decade from 2000-2009" ;
+                                          rdfs:label "00" .
+
+
+###  http://semantics.tuwien.ac.at/group4#2010s
+<http://semantics.tuwien.ac.at/group4#2010s> rdf:type owl:NamedIndividual ,
+                                                      :Decade ;
+                                             rdfs:comment "Decade from 2010-2019" ;
+                                             rdfs:label "2010s" .
+
+
+###  http://semantics.tuwien.ac.at/group4#50s
+<http://semantics.tuwien.ac.at/group4#50s> rdf:type owl:NamedIndividual ,
+                                                    :Decade ;
+                                           rdfs:comment "Decade from 1950-1959" ;
+                                           rdfs:label "50s" .
+
+
+###  http://semantics.tuwien.ac.at/group4#60s
+<http://semantics.tuwien.ac.at/group4#60s> rdf:type owl:NamedIndividual ,
+                                                    :Decade ;
+                                           rdfs:comment "Decade from 1960-1969" ;
+                                           rdfs:label "60s" .
+
+
+###  http://semantics.tuwien.ac.at/group4#70s
+<http://semantics.tuwien.ac.at/group4#70s> rdf:type owl:NamedIndividual ,
+                                                    :Decade ;
+                                           rdfs:comment "Decade from 1970-1979" ;
+                                           rdfs:label "70s" .
+
+
+###  http://semantics.tuwien.ac.at/group4#80s
+<http://semantics.tuwien.ac.at/group4#80s> rdf:type owl:NamedIndividual ,
+                                                    :Decade ;
+                                           rdfs:comment "Decade from 1980-1989" ;
+                                           rdfs:label "80s" .
+
+
+###  http://semantics.tuwien.ac.at/group4#90s
+<http://semantics.tuwien.ac.at/group4#90s> rdf:type owl:NamedIndividual ,
+                                                    :Decade ;
+                                           rdfs:comment "Decade from 1990-1999" ;
+                                           rdfs:label "90s" .
+
+
+###  Generated by the OWL API (version 4.5.7.2018-12-02T02:23:35Z) https://github.com/owlcs/owlapi

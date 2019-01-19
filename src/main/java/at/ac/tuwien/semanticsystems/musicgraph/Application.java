@@ -150,7 +150,7 @@ public class Application {
             }
 
             // Print data graph
-            //dataModel.write(System.out, "TURTLE");
+            dataModel.write(System.out, "TURTLE");
 
             /*
             FUSEKI connection example

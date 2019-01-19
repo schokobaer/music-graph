@@ -6,11 +6,14 @@ import org.apache.jena.rdf.model.Property;
 
 public class MusicGraph {
 
-    private static final String baseUri = "http://example.com/musicgraph#";
+    private static final String baseUri = "http://semantics.tuwien.ac.at/group4#";
     private static final Model baseModel = ModelFactory.createDefaultModel();
 
+    /** Properties **/
     public static final Property numberOfListenings = baseModel.createProperty(baseUri, "numberOfListenings");
     public static final Property listenedAt = baseModel.createProperty(baseUri, "listenedAt");
+
+    /** Classes **/
 
 
 }
