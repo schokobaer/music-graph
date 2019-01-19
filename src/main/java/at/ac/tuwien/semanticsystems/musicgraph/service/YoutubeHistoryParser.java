@@ -31,13 +31,7 @@ public class YoutubeHistoryParser {
             posStart = fileContent.indexOf("<br>", posEnd) + 4;
             posStart = fileContent.indexOf("<br>", posStart) + 4;
             posEnd = fileContent.indexOf("<", posStart);
-            String viewDateStr = fileContent.substring(posStart, posEnd).replaceAll("[A-Z]", "").trim();
-            Date viewDate;
-            try {
-                viewDate = sdf.parse(viewDateStr);
-            } catch (ParseException e) {
-                viewDate = null;
-            }
+            String viewDate = fileContent.substring(posStart, posEnd);
 
             YoutubeVideo video = new YoutubeVideo(title, viewDate);
             videos.add(video);
@@ -50,9 +44,9 @@ public class YoutubeHistoryParser {
 
     public static class YoutubeVideo {
         private String videoTitle;
-        private Date viewDate;
+        private String viewDate;
 
-        public YoutubeVideo(String videoTitle, Date viewDate) {
+        public YoutubeVideo(String videoTitle, String viewDate) {
             this.videoTitle = videoTitle;
             this.viewDate = viewDate;
         }
@@ -65,11 +59,11 @@ public class YoutubeHistoryParser {
             this.videoTitle = videoTitle;
         }
 
-        public Date getViewDate() {
+        public String getViewDate() {
             return viewDate;
         }
 
-        public void setViewDate(Date viewDate) {
+        public void setViewDate(String viewDate) {
             this.viewDate = viewDate;
         }
     }

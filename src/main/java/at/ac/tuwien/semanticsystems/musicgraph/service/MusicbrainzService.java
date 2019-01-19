@@ -1,5 +1,10 @@
 package at.ac.tuwien.semanticsystems.musicgraph.service;
 
+import at.ac.tuwien.semanticsystems.musicgraph.vocab.Schema;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ResIterator;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.vocabulary.RDF;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +26,7 @@ public class MusicbrainzService {
 
     public List<JSONObject> search(String query) {
         try {
-            String response = httpClient.get(SEARCH_BASE_URL + URLEncoder.encode(query, "UTF-8"));
+            String response = httpClient.get(SEARCH_BASE_URL + URLEncoder.encode(query, "UTF-8") + "&limit=1");
             JSONObject json = new JSONObject(response);
             if (!json.has("releases")) {
                 return new LinkedList<>();
@@ -49,5 +54,13 @@ public class MusicbrainzService {
         return "";
     }
 
+    public Resource findSongResource(Model model) {
+        ResIterator itr = model.listResourcesWithProperty(RDF.type, Schema.MusciAlbum);
+        if (!itr.hasNext()) {
+            itr = model.listResourcesWithProperty(RDF.type, Schema.MusicRelease);
+        }
+
+        return itr.hasNext() ? itr.nextResource() : null;
+    }
 
 }

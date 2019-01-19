@@ -5,9 +5,16 @@ import at.ac.tuwien.semanticsystems.musicgraph.service.DiscogsService;
 import at.ac.tuwien.semanticsystems.musicgraph.service.HtmlJsonLdExtractor;
 import at.ac.tuwien.semanticsystems.musicgraph.service.MusicbrainzService;
 import at.ac.tuwien.semanticsystems.musicgraph.service.YoutubeHistoryParser;
+import at.ac.tuwien.semanticsystems.musicgraph.vocab.MusicGraph;
 import org.apache.jena.atlas.json.JsonObject;
+import org.apache.jena.fuseki.embedded.FusekiServer;
+import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.impl.LiteralImpl;
+import org.apache.jena.sparql.core.DatasetImpl;
+import org.apache.jena.system.Txn;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,8 +59,24 @@ public class Application {
                 String musicbrainzSongUri = musicbrainzService.getSongUrl(queryResults.get(0));
                 JSONObject musicbrainzJson = htmlJsonLdExtractor.loadJsonLdByUrl(musicbrainzSongUri);
                 Model musicbrainzModel = htmlJsonLdExtractor.musicbrainzModel(musicbrainzJson);
+
+                // Add date and increase listenings
+                Resource songResource = musicbrainzService.findSongResource(musicbrainzModel);
+                if (songResource != null) {
+                    songResource.addProperty(MusicGraph.listenedAt, video.getViewDate());
+                    int amountListenings = 1;
+                    if (songResource.hasProperty(MusicGraph.numberOfListenings)) {
+                        amountListenings = songResource.getProperty(MusicGraph.numberOfListenings).getObject().asLiteral().getInt();
+                        amountListenings++;
+                        songResource.removeAll(MusicGraph.numberOfListenings);
+                    }
+                    songResource.addProperty(MusicGraph.numberOfListenings, amountListenings + "");
+                }
+
+                // Merge
                 dataModel = dataModel.union(musicbrainzModel);
                 LOGGER.info("Merged musicbrainz model from {}", video.getVideoTitle());
+
 
                 // Optional: Discogs Model linked by musicbrainz
                 if (musicbrainzJson.has("sameAs")
@@ -72,7 +95,6 @@ public class Application {
 
             // Print data graph
             dataModel.write(System.out, "TURTLE");
-
 
 
         };
