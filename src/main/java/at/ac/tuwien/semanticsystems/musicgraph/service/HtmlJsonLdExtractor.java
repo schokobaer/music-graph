@@ -2,6 +2,7 @@ package at.ac.tuwien.semanticsystems.musicgraph.service;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,11 +43,29 @@ public class HtmlJsonLdExtractor {
         return jsonToModel(neededJson, "https://www.discogs.com/");
     }
 
-    public Model musicbrainzModel(JSONObject json) {
+    public Model musicbrainzSongModel(JSONObject json) {
         JSONObject neededJson = copyOptionalFields(json,
                 "name", "@id", "@context", "@type", "releaseOf", "sameAs", "creditedTo");
-        return jsonToModel(neededJson, "https://musicbrainz.org/");
+        if (neededJson.getString("@type").equals("MusicRelease")) {
+            return jsonToModel(neededJson, "https://musicbrainz.org/");
+        }
+        return null;
+    }
 
+    public Model musicbrainzArtistModel(JSONObject json) {
+        JSONObject neededJson = copyOptionalFields(json,
+                "name", "@id", "@context", "@type", "sameAs");
+        Object type = neededJson.get("@type");
+        boolean valid = false;
+        if (type instanceof String) {
+            valid = type.equals("MusicGroup");
+        } else if (type instanceof JSONArray) {
+            valid = ((JSONArray) type).toList().contains("MusicGroup");
+        }
+        if (valid) {
+            return jsonToModel(neededJson, "https://musicbrainz.org/");
+        }
+        return null;
     }
 
     private JSONObject copyOptionalFields(JSONObject obj, String... fields) {
