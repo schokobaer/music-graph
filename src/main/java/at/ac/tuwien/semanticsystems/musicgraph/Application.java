@@ -166,10 +166,11 @@ public class Application {
             RDFConnection conn = RDFConnectionFactory.connect(ds);
             conn.load(dataModel);
             QueryExecution qExec = conn.query("PREFIX schema: <http://schema.org/> " +
-                    "SELECT DISTINCT ?artist " +
+                    "SELECT DISTINCT ?artistname " +
                     "WHERE  { " +
                     "?song a schema:MusicRelease. " +
                     "?song schema:creditedTo ?artist. " +
+                    "?artist schema:name ?artistname" +
                     "}");
             ResultSet rs = qExec.execSelect();
 
@@ -178,8 +179,11 @@ public class Application {
             List<String> artistNameList = new ArrayList<>();
             while (rs.hasNext()) {
                 QuerySolution qs = rs.next();
-                Literal artistName = qs.getLiteral("artist");
-//                System.out.println("Artist: " + artistName);
+                Literal artistName = qs.getLiteral("artistname");
+                if (artistName == null) {
+                    continue;
+                }
+                LOGGER.info("Artist: {}", artistName);
                 artistNameList.add(artistName.toString());
             }
             qExec.close();
