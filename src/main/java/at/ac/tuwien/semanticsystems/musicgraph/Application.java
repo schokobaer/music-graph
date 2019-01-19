@@ -35,7 +35,7 @@ public class Application {
         return args -> {
             Model dataModel = ModelFactory.createDefaultModel();
 
-            String youtubeHistoryFilePath = "C:\\Users\\Andreas\\Desktop\\tmp\\aic-takeout\\takeout-20190115T123738Z-001\\Takeout\\YouTube\\Verlauf\\Wiedergabeverlauf.html";
+            String youtubeHistoryFilePath = "resources/wiedergabeverlauf.html";
             List<YoutubeHistoryParser.YoutubeVideo> youtubeVideos = youtubeHistoryParser.parseFile(youtubeHistoryFilePath);
             LOGGER.info("Found Videos in youtube history: {}", youtubeVideos.size());
 
