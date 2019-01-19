@@ -6,15 +6,23 @@ import at.ac.tuwien.semanticsystems.musicgraph.service.HtmlJsonLdExtractor;
 import at.ac.tuwien.semanticsystems.musicgraph.service.MusicbrainzService;
 import at.ac.tuwien.semanticsystems.musicgraph.service.YoutubeHistoryParser;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.MusicGraph;
-import org.apache.jena.atlas.json.JsonObject;
 import org.apache.jena.fuseki.embedded.FusekiServer;
 import org.apache.jena.query.Dataset;
+import org.apache.jena.fuseki.embedded.FusekiServer;
+import org.apache.jena.query.Dataset;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.impl.LiteralImpl;
 import org.apache.jena.sparql.core.DatasetImpl;
 import org.apache.jena.system.Txn;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdfconnection.RDFConnection;
+import org.apache.jena.rdfconnection.RDFConnectionFactory;
+import org.apache.jena.sparql.core.DatasetImpl;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +50,7 @@ public class Application {
         return args -> {
             Model dataModel = ModelFactory.createDefaultModel();
 
-            String youtubeHistoryFilePath = "C:\\Users\\Andreas\\Desktop\\tmp\\aic-takeout\\takeout-20190115T123738Z-001\\Takeout\\YouTube\\Verlauf\\Wiedergabeverlauf.html";
+            String youtubeHistoryFilePath = "resources/wiedergabeverlauf.html";
             List<YoutubeHistoryParser.YoutubeVideo> youtubeVideos = youtubeHistoryParser.parseFile(youtubeHistoryFilePath);
             LOGGER.info("Found Videos in youtube history: {}", youtubeVideos.size());
 
@@ -96,7 +104,27 @@ public class Application {
             // Print data graph
             dataModel.write(System.out, "TURTLE");
 
+            // Setup and start Fuseki
+            Dataset ds = new DatasetImpl(dataModel);
+            FusekiServer server = FusekiServer.create()
+                    .add("/dataset", ds)
+                    .build() ;
+            server.start() ;
 
+
+            RDFConnection conn = RDFConnectionFactory.connect(ds);
+            conn.load(dataModel) ;
+            QueryExecution qExec = conn.query("SELECT DISTINCT ?s { ?s ?p ?o }") ;
+            ResultSet rs = qExec.execSelect() ;
+            while(rs.hasNext()) {
+                QuerySolution qs = rs.next() ;
+                Resource subject = qs.getResource("s") ;
+                System.out.println("Subject: "+subject) ;
+            }
+            qExec.close() ;
+            conn.close() ;
+
+            server.stop();
         };
     }
 }
