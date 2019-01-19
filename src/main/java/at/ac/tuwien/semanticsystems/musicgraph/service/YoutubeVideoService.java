@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class YoutubeHistoryParser {
+public class YoutubeVideoService {
 
     private final static String SEARCH_STRING = "<a href=\"https://www.youtube.com/watch?v=";
     private final static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
