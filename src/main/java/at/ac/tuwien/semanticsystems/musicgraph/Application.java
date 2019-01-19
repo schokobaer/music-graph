@@ -102,7 +102,7 @@ public class Application {
             }
 
             // Print data graph
-            dataModel.write(System.out, "TURTLE");
+            //dataModel.write(System.out, "TURTLE");
 
             // Setup and start Fuseki
             Dataset ds = new DatasetImpl(dataModel);

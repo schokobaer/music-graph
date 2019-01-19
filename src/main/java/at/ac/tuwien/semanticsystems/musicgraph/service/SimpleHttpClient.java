@@ -1,19 +1,20 @@
 package at.ac.tuwien.semanticsystems.musicgraph.service;
 
-import org.apache.commons.io.IOUtils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.Charset;
 
 @Service
 public class SimpleHttpClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHttpClient.class);
+
+    private OkHttpClient httpClient = new OkHttpClient();
 
     /**
      * Simple GET Call to the given URL.
@@ -22,13 +23,19 @@ public class SimpleHttpClient {
      * @return Content of the result, or null if not working.
      */
     public String get(String url) {
+
+        Request req = new Request.Builder().url(url).get().build();
         try {
-            URL u = new URL(url);
-            InputStream is = u.openStream();
-            return IOUtils.toString(is, Charset.defaultCharset());
+            Response resp = httpClient.newCall(req).execute();
+            if (resp.isSuccessful()) {
+                return resp.body().string();
+            }
+            LOGGER.warn("Not successful loading {}: {}", url, resp.message());
+            return null;
         } catch (IOException e) {
-            LOGGER.warn("Could not fetch {}", url, e);
+            LOGGER.warn("Could not load {}: {}", url, e.getMessage());
             return null;
         }
+
     }
 }
