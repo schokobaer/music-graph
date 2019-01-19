@@ -5,6 +5,14 @@ import at.ac.tuwien.semanticsystems.musicgraph.service.DiscogsService;
 import at.ac.tuwien.semanticsystems.musicgraph.service.HtmlJsonLdExtractor;
 import at.ac.tuwien.semanticsystems.musicgraph.service.MusicbrainzService;
 import at.ac.tuwien.semanticsystems.musicgraph.service.YoutubeHistoryParser;
+import github.jjbinks.bandsintown.api.BITAPI;
+import github.jjbinks.bandsintown.api.BITAPIClient;
+import github.jjbinks.bandsintown.dto.Artist;
+import github.jjbinks.bandsintown.dto.ArtistEvent;
+import github.jjbinks.bandsintown.impl.BITAPIClientImpl;
+import github.jjbinks.bandsintown.impl.BITAPIImpl;
+import github.jjbinks.bandsintown.impl.resource.ArtistEventsResource;
+import github.jjbinks.bandsintown.impl.resource.ArtistInfoResource;
 import org.apache.jena.atlas.json.JsonObject;
 import org.apache.jena.fuseki.embedded.FusekiServer;
 import org.apache.jena.query.Dataset;
@@ -25,6 +33,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
@@ -82,13 +94,16 @@ public class Application {
             // Print data graph
             dataModel.write(System.out, "TURTLE");
 
+            /*
+            FUSEKI connection
+             */
+
             // Setup and start Fuseki
             Dataset ds = new DatasetImpl(dataModel);
             FusekiServer server = FusekiServer.create()
                     .add("/dataset", ds)
                     .build() ;
             server.start() ;
-
 
             RDFConnection conn = RDFConnectionFactory.connect(ds);
             conn.load(dataModel) ;
@@ -103,6 +118,30 @@ public class Application {
             conn.close() ;
 
             server.stop();
+
+            /*
+            BandsInTOwn API Connection example
+            */
+
+            BITAPI bitapi = new BITAPIImpl("JJBinksTest");
+            Client client = ClientBuilder.newClient();
+            BITAPIClient bitapiClient = new BITAPIClientImpl(client, "JJBinksTest");
+
+            // get artist information
+            Artist artist =  bitapiClient.getBITResource(new ArtistInfoResource("Metallica"));
+            System.out.println(artist.getName() + " " + artist.getUrl());
+            LocalDate fromDate = LocalDate.now();
+            LocalDate toDate = fromDate.plusYears(10);
+
+            // list events for artist
+            List<ArtistEvent> artistEvents =  bitapiClient.getBITResource(new ArtistEventsResource("Metallica", fromDate, toDate));
+            for (ArtistEvent event : artistEvents) {
+                System.out.println("Venue: " + event.getVenue().getCountry() + " - " + event.getVenue().getCity() + "\n" +
+                        "Date: " + event.getDatetime() + "\n" +
+                        "Description: " + event.getDescription() + "\n" +
+                        "Event-Link" + event.getUrl() + "\n" +
+                        "-----------------------");
+            }
         };
     }
 }

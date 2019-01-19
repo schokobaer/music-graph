@@ -14,6 +14,14 @@
         <version>2.0.5.RELEASE</version>
     </parent>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -44,20 +52,35 @@
             <version>20180813</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-fuseki-embedded -->
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-fuseki-embedded</artifactId>
             <version>3.8.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-tdb -->
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-tdb</artifactId>
             <version>3.10.0</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.github.JayJayBinks</groupId>
+            <artifactId>Bandsintown-API</artifactId>
+            <version>d0cbba6983067c48ded9ad64d8ed4d8a3299f0fd</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.27</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>2.27</version>
+        </dependency>
 
     </dependencies>
 
