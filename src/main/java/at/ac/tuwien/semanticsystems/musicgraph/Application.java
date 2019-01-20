@@ -119,12 +119,12 @@ public class Application {
                 if (songResource != null) {
                     songResource.addProperty(MusicGraph.listenedAt, video.getViewDate());
                     int amountListenings = 1;
-                    if (songResource.hasProperty(MusicGraph.numberOfListenings)) {
-                        amountListenings = songResource.getProperty(MusicGraph.numberOfListenings).getObject().asLiteral().getInt();
+                    if (songResource.hasProperty(MusicGraph.numberListenings)) {
+                        amountListenings = songResource.getProperty(MusicGraph.numberListenings).getObject().asLiteral().getInt();
                         amountListenings++;
-                        songResource.removeAll(MusicGraph.numberOfListenings);
+                        songResource.removeAll(MusicGraph.numberListenings);
                     }
-                    songResource.addProperty(MusicGraph.numberOfListenings, amountListenings + "");
+                    songResource.addProperty(MusicGraph.numberListenings, amountListenings + "");
                     songResource.removeAll(Schema.creditedTo);
                     songResource.addProperty(Schema.creditedTo, artistResource);
                 }
