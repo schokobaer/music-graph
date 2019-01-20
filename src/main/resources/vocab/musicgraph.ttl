@@ -130,49 +130,49 @@
 #################################################################
 
 ###  http://semantics.tuwien.ac.at/group4#00
-<http://semantics.tuwien.ac.at/group4#00> rdf:type owl:NamedIndividual ,
+<http://semantics.tuwien.ac.at/group4#Decade00> rdf:type owl:NamedIndividual ,
                                                    :Decade ;
                                           rdfs:comment "Decade from 2000-2009" ;
                                           rdfs:label "00" .
 
 
 ###  http://semantics.tuwien.ac.at/group4#2010s
-<http://semantics.tuwien.ac.at/group4#2010s> rdf:type owl:NamedIndividual ,
+<http://semantics.tuwien.ac.at/group4#Decade2010s> rdf:type owl:NamedIndividual ,
                                                       :Decade ;
                                              rdfs:comment "Decade from 2010-2019" ;
                                              rdfs:label "2010s" .
 
 
 ###  http://semantics.tuwien.ac.at/group4#50s
-<http://semantics.tuwien.ac.at/group4#50s> rdf:type owl:NamedIndividual ,
+<http://semantics.tuwien.ac.at/group4#Decade50s> rdf:type owl:NamedIndividual ,
                                                     :Decade ;
                                            rdfs:comment "Decade from 1950-1959" ;
                                            rdfs:label "50s" .
 
 
 ###  http://semantics.tuwien.ac.at/group4#60s
-<http://semantics.tuwien.ac.at/group4#60s> rdf:type owl:NamedIndividual ,
+<http://semantics.tuwien.ac.at/group4#Decade60s> rdf:type owl:NamedIndividual ,
                                                     :Decade ;
                                            rdfs:comment "Decade from 1960-1969" ;
                                            rdfs:label "60s" .
 
 
 ###  http://semantics.tuwien.ac.at/group4#70s
-<http://semantics.tuwien.ac.at/group4#70s> rdf:type owl:NamedIndividual ,
+<http://semantics.tuwien.ac.at/group4#Decade70s> rdf:type owl:NamedIndividual ,
                                                     :Decade ;
                                            rdfs:comment "Decade from 1970-1979" ;
                                            rdfs:label "70s" .
 
 
 ###  http://semantics.tuwien.ac.at/group4#80s
-<http://semantics.tuwien.ac.at/group4#80s> rdf:type owl:NamedIndividual ,
+<http://semantics.tuwien.ac.at/group4#Decade80s> rdf:type owl:NamedIndividual ,
                                                     :Decade ;
                                            rdfs:comment "Decade from 1980-1989" ;
                                            rdfs:label "80s" .
 
 
 ###  http://semantics.tuwien.ac.at/group4#90s
-<http://semantics.tuwien.ac.at/group4#90s> rdf:type owl:NamedIndividual ,
+<http://semantics.tuwien.ac.at/group4#Decade90s> rdf:type owl:NamedIndividual ,
                                                     :Decade ;
                                            rdfs:comment "Decade from 1990-1999" ;
                                            rdfs:label "90s" .

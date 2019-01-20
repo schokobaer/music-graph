@@ -115,19 +115,12 @@
                 </executions>
                 <configuration>
                     <includes>
-                        <include>src/main/resources/vocab/*.ttl</include>
+                        <include>src/main/resources/vocab/musicgraph.ttl</include>
                     </includes>
                     <fileOptions>
                         <source>
                             <input>default</input>
                             <package-name>at.ac.tuwien.semanticsystems.musicgraph.vocab</package-name>
-                        </source>
-                        <source>
-                            <!-- Test2.java (only) will contain OntModel declarations -->
-                            <input>src/main/resources/vocab/vocab.ttl</input>
-                            <ontology>true</ontology>
-                            <!-- caution: the config file property name 'inference' is mapped to 'use-inf' -->
-                            <use-inf>true</use-inf>
                         </source>
                     </fileOptions>
                 </configuration>
