@@ -233,12 +233,6 @@
 
 
 
-  wd:Q20003 wdt:P175 ?interpret .
-  wd:Q20003 wdt:P136 ?genre .
-  ?interpret wdt:P495 ?country .
-
-
-
 
 
 
