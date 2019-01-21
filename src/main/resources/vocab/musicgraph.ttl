@@ -100,12 +100,6 @@
 :Decade rdf:type owl:Class .
 
 
-###  http://semantics.tuwien.ac.at/group4#Song
-:Song rdf:type owl:Class ;
-      rdfs:comment "Class for songs" ;
-      rdfs:label "Song" .
-
-
 ###  http://semantics.tuwien.ac.at/group4#SpotifySong
 :SpotifySong rdf:type owl:Class ;
              rdfs:subClassOf :AmazonMusicSong ;
@@ -183,9 +177,76 @@
 
 
 
+############################
+### WikiData
+############################
+
+# PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+# PREFIX wd: <http://www.wikidata.org/entity/>
+
+# wdt:P31 --> instanceOf (Property)
+# is used instead of rdf:type in wikidata
+
+
+# Song definition
+# wd:Q2031291 --> Release (Class)
+# <Song> a wd:Q2031291 .
+
+# wd:Q134556 --> Single (=SubClass of Release; wahrscheinlich =Song in unserer Domain))
+# <Song> a wd:Q134556 .
+
+
+# Genre definition
+# wd:Q188451 --> Genre (Class)
+# <Genre> wdt:P31 wd:Q188451 . --> Lists all Genres in wiki
+
+# wdt:P136 --> genre (Property)
+# <Song> wdt:P136 <Genre> .
+# <Interpret> wdt:P136 <Genre> .
+
+
+
+# Interpret definition
+# (there is no Class for Interpret)
+# wdt:P175 --> performer (Property)
+# <Song> wdt:P175 <Interpret> .
+
+
+
+# Inception
+# wdt:P571 --> inception (Property)
+# <Interpret> wdt:P571 "<Year>" .
+
+
+#Country definition
+# wd:Q6256 --> Country (Class)
+# <Country> wdt:P31 wd:Q6256 . --> Lists all countrys in wiki
+
+# wdt:P495 --> country of origin (Property)
+# <Interpret> wdt:P495 <Country> .
+
+
+
+# wdt:P434 MusicBrainz Artist ID (Property)
+# Used to link to musicbrainz
+# <Interpret> wdt:P434 <MusicBrainzId> .
+
+
+
+  wd:Q20003 wdt:P175 ?interpret .
+  wd:Q20003 wdt:P136 ?genre .
+  ?interpret wdt:P495 ?country .
+
+
+
+
+
+
 #############################
 ### schema.org Resources:
 #############################
+
+# PREFIX schema: <https://schema.org/>
 
 ### Classes
 
