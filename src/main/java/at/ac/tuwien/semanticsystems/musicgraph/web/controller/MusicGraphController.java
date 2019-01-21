@@ -1,11 +1,11 @@
 package at.ac.tuwien.semanticsystems.musicgraph.web.controller;
 
+import at.ac.tuwien.semanticsystems.musicgraph.web.Model.ArtistModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -19,35 +19,15 @@ public class MusicGraphController {
     }
 
     @RequestMapping("/favouriteArtists")
-    public String listNames(Model model) {
-        List<String> nameList = new ArrayList<>();
+    public String favouriteArtists(Model model) {
+        List<ArtistModel> artists = new ArrayList<>();
+        ArtistModel artistModel = new ArtistModel("josef", "st", "https://www.google.at");
+        artists.add(artistModel);
+        artists.add(artistModel);
+        artists.add(artistModel);
+        artists.add(artistModel);
 
-        nameList.add("hallo");
-        nameList.add("josef");
-        nameList.add("es");
-        nameList.add("geht");
-        nameList.add("hallo");
-        nameList.add("josef");
-        nameList.add("es");
-        nameList.add("geht");
-        nameList.add("hallo");
-        nameList.add("josef");
-        nameList.add("es");
-        nameList.add("geht");
-        nameList.add("hallo");
-        nameList.add("josef");
-        nameList.add("es");
-        nameList.add("geht");
-        nameList.add("hallo");
-        nameList.add("josef");
-        nameList.add("es");
-        nameList.add("geht");
-        nameList.add("hallo");
-        nameList.add("josef");
-        nameList.add("es");
-        nameList.add("geht");
-
-        model.addAttribute("names", nameList);
+        model.addAttribute("artists", artists);
         return "favouriteArtists";
     }
 }

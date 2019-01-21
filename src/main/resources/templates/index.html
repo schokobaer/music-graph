@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!--<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico"/>
 
-    <title>Navbar Template for Bootstrap</title>
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Music Graph</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -17,24 +12,28 @@
             integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
             crossorigin="anonymous"></script>
 </head>
-<body>
 
+<body>
 <div class="container">
-    <!-- Page Content -->
     <section class="py-5">
-        <div class="container">
-            <h1 class="display-4">Music Graph Application</h1>
-            <p class="lead">Learn your music interest based on your previous listening experince</p>
+        <div style="display: flex; justify-content: space-around;" class="align-items-center">
+            <div>
+                <h1 class="display-6">Music Graph Application</h1>
+                <p class="lead">Learn your music interest based on your previous listening experience</p>
+            </div>
+            <img src="/img/music.png" class="img-responsive" style="width: 20%; height: 20%" alt="music tree"/>
         </div>
     </section>
 
-    <div class="button-box col-lg-12">
-        <a class="btn btn-lg btn-primary" href="/" role="button">Home</a>
+    <div class="col-md-12 text-center align-items-center">
+        <a class="btn btn-lg btn-primary"    href="/" role="button">Home</a>
+        <a class="btn btn-lg btn-primary" href="/favouriteArtists" role="button">Favourite artists</a>
+        <a class="btn btn-lg btn-primary" href="/favouriteArtists" role="button">Favourite artists</a>
         <a class="btn btn-lg btn-primary" href="/favouriteArtists" role="button">Favourite artists</a>
     </div>
-    <div class="jumbotron" style="margin-top: 1em">
+    <div class="jumbotron" style="margin-top: 1em" layout:fragment="content">
+        <strong>Your results will be displayed here. Please select a button!</strong>
     </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </body>
 </html>
