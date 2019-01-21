@@ -6,6 +6,11 @@ import at.ac.tuwien.semanticsystems.musicgraph.service.HtmlJsonLdExtractor;
 import at.ac.tuwien.semanticsystems.musicgraph.service.MusicbrainzService;
 import at.ac.tuwien.semanticsystems.musicgraph.service.YoutubeVideoService;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.MusicGraph;
+import com.taxonic.carml.engine.RmlMapper;
+import com.taxonic.carml.logical_source_resolver.JsonPathResolver;
+import com.taxonic.carml.model.TriplesMap;
+import com.taxonic.carml.util.RmlMappingLoader;
+import com.taxonic.carml.vocab.Rdf;
 import org.apache.jena.fuseki.embedded.FusekiServer;
 import org.apache.jena.query.Dataset;
 import github.jjbinks.bandsintown.api.BITAPI;
@@ -17,10 +22,7 @@ import github.jjbinks.bandsintown.impl.BITAPIClientImpl;
 import github.jjbinks.bandsintown.impl.BITAPIImpl;
 import github.jjbinks.bandsintown.impl.resource.ArtistEventsResource;
 import github.jjbinks.bandsintown.impl.resource.ArtistInfoResource;
-import org.apache.jena.atlas.json.JsonObject;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.Schema;
-import org.apache.jena.fuseki.embedded.FusekiServer;
-import org.apache.jena.query.Dataset;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
@@ -31,6 +33,8 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.sparql.core.DatasetImpl;
 import org.apache.jena.rdfconnection.RDFConnection;
 import org.apache.jena.rdfconnection.RDFConnectionFactory;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.Rio;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,10 +45,12 @@ import org.springframework.context.annotation.Bean;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import java.nio.file.Paths;
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootApplication
 public class Application {
@@ -90,6 +96,28 @@ public class Application {
                     LOGGER.info("Could not find a MusicRelease on MusicBrainz for {}", video.getVideoTitle());
                 }
 
+                Set<TriplesMap> mapping =
+                        RmlMappingLoader
+                                .build()
+                                .load(RDFFormat.TURTLE, Paths.get("resources/spotifyMapping.ttl"));
+
+                String test = Paths.get("resources").toAbsolutePath().toString();
+                String abc = "";
+                RmlMapper mapper =
+                        RmlMapper
+                                .newBuilder()
+                                // Add the resolvers to suit your need
+                                .setLogicalSourceResolver(Rdf.Ql.JsonPath, new JsonPathResolver())
+                                // optional:
+                                // specify IRI unicode normalization form (default = NFC)
+                                // see http://www.unicode.org/unicode/reports/tr15/tr15-23.html
+                                .iriUnicodeNormalization(Normalizer.Form.NFKC)
+                                // set file directory for sources in mapping
+                                .fileResolver(Paths.get("resources/data"))
+                                .build();
+
+                org.eclipse.rdf4j.model.Model result = mapper.map(mapping);
+                Rio.write(result,System.out,RDFFormat.TURTLE);
 
 
                 // Find Artist on MusicBrainz
