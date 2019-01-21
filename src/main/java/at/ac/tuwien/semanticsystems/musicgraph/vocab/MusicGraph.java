@@ -7,7 +7,8 @@ import org.apache.jena.rdf.model.Resource;
 
 public class MusicGraph {
 
-    private static final String baseUri = "http://semantics.tuwien.ac.at/group4#";
+    public static final String baseUri = "http://semantics.tuwien.ac.at/group4#";
+    public static final String entityBaseUri = "http://semantics.tuwien.ac.at/group4/";
     private static final Model baseModel = ModelFactory.createDefaultModel();
 
     /** Properties **/

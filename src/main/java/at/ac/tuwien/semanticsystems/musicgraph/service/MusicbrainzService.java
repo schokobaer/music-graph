@@ -21,8 +21,13 @@ public class MusicbrainzService {
 
     private static final String BASE_URL = "https://musicbrainz.org/";
 
-    @Autowired
+
     private SimpleHttpClient httpClient;
+
+    @Autowired
+    public void setHttpClient(SimpleHttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     public List<JSONObject> searchSong(String query) {
         String SEARCH_BASE_URL = "https://musicbrainz.org/ws/2/release?fmt=json&query=";
