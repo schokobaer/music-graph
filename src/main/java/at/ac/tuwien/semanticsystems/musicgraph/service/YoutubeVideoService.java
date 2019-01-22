@@ -3,10 +3,7 @@ package at.ac.tuwien.semanticsystems.musicgraph.service;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.MusicGraph;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.Schema;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.ResIterator;
-import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.json.JSONObject;
@@ -75,9 +72,6 @@ public class YoutubeVideoService {
         ResIterator itr = model.listResourcesWithProperty(RDF.type, MusicGraph.YoutubeVideo);
         while (itr.hasNext()) {
             Resource video = itr.nextResource();
-            if (video.hasProperty(RDF.type, MusicGraph.YoutubeSongVideo)) {
-                continue;
-            }
 
             String videoTitle = video.getProperty(Schema.name).getLiteral().getString();
 
@@ -102,40 +96,65 @@ public class YoutubeVideoService {
                     continue;
                 }
 
-                // Find Artist on MusicBrainz
-                String artist = songJson.getString("creditedTo");
-                List<JSONObject> artistQueryResults = musicbrainzService.searchArtist(artist);
-                if (artistQueryResults.isEmpty()) {
-                    LOGGER.info("No query results for artist {}", artist);
+                // Check if Song title is in youtube video title
+                Resource songResourceMusicBrainz = musicbrainzService.findSongResource(songModel);
+                String songTitle = songResourceMusicBrainz.getProperty(Schema.name).getString();
+                if (!videoTitle.toLowerCase().contains(songTitle.toLowerCase())) {
+                    i++;
                     continue;
                 }
-                Model artistModel = null;
-                int j = 0;
-                while (artistModel == null) {
-                    String artistUri = musicbrainzService.getArtistUrl(artistQueryResults.get(j));
-                    JSONObject artistJson = htmlJsonLdExtractor.loadJsonLdByUrl(artistUri);
-                    artistModel = htmlJsonLdExtractor.musicbrainzArtistModel(artistJson);
-                }
-                if (artistModel == null) {
-                    LOGGER.info("Could not find an Artist on musicBrainz for {}", artist);
+
+                // Check if the artist is mentioned in the video title
+                String artist = songJson.getString("creditedTo");
+                if (!videoTitle.toLowerCase().contains(artist.toLowerCase())) {
+                    i++;
+                    continue;
                 }
 
-                // TODO: Search for wikiData -> sameAs for song and artist
 
-                Resource artistResourceMusicBrainz = musicbrainzService.findArtistResource(artistModel);
+                // Check if the artist is already in the model
                 String artistUrified = artist.toLowerCase().replaceAll(" ", "_");
                 Resource artistResource = model.getResource(MusicGraph.entityBaseUri + artistUrified);
-                artistResource.addProperty(Schema.name, artist);
-                artistResource.addProperty(RDF.type, MusicGraph.Artist);
+                if (!artistResource.hasProperty(RDF.type, MusicGraph.Artist)) {
+                    // Search the Artist
+                    List<JSONObject> artistQueryResults = musicbrainzService.searchArtist(artist);
+                    if (artistQueryResults.isEmpty()) {
+                        LOGGER.info("No query results for artist {}", artist);
+                        continue;
+                    }
+                    Model artistModel = null;
+                    String artistUri = "";
+                    int j = 0;
+                    while (artistModel == null) {
+                        artistUri = musicbrainzService.getArtistUrl(artistQueryResults.get(j));
+                        JSONObject artistJson = htmlJsonLdExtractor.loadJsonLdByUrl(artistUri);
+                        artistModel = htmlJsonLdExtractor.musicbrainzArtistModel(artistJson);
+                    }
+                    if (artistModel == null) {
+                        LOGGER.info("Could not find an Artist on musicBrainz for {}", artist);
+                    }
 
-                Resource songResourceMusicBrainz = musicbrainzService.findSongResource(songModel);
+                    // TODO: Search for wikiData -> sameAs for song and artist
+                    Resource artistResourceMusicBrainz = musicbrainzService.findArtistResource(artistModel);
+                    StmtIterator stmtItr = artistResourceMusicBrainz.listProperties(Schema.sameAs);
+                    while (stmtItr.hasNext()) {
+                        artistResource.addProperty(OWL.sameAs, stmtItr.nextStatement().getObject());
+                    }
+                    artistResource.addProperty(OWL.sameAs, model.getResource(artistUri));
 
-                String songUrified = songResourceMusicBrainz.getProperty(Schema.name).getString().toLowerCase().replaceAll(" ", "_");
-                Resource songResource = model.getResource(MusicGraph.entityBaseUri + artistUrified + "_-_" + songUrified);
-                songResource.addProperty(RDF.type, MusicGraph.YoutubeSongVideo);
-                songResource.addProperty(Schema.creditedTo, artistResource);
-                songResource.addProperty(Schema.name, songResourceMusicBrainz.getProperty(Schema.name).getObject());
-                songResource.addProperty(OWL.sameAs, video);
+                    artistResource.addProperty(Schema.name, artist);
+                    artistResource.addProperty(RDF.type, MusicGraph.Artist);
+
+                }
+
+                // Create the Song Resource
+                Resource songResource = model.getResource(MusicGraph.entityBaseUri + artistUrified + "_-_" + songTitle.toLowerCase().replaceAll(" ", "_"));
+                if (!songResource.hasProperty(RDF.type, MusicGraph.YoutubeSongVideo)) {
+                    songResource.addProperty(RDF.type, MusicGraph.YoutubeSongVideo);
+                    songResource.addProperty(Schema.creditedTo, artistResource);
+                    songResource.addProperty(Schema.name, songResourceMusicBrainz.getProperty(Schema.name).getObject());
+                    songResource.addProperty(OWL.sameAs, video);
+                }
                 songResource.addProperty(MusicGraph.listenedAt, video.getProperty(MusicGraph.clickedAt).getObject());
 
             }

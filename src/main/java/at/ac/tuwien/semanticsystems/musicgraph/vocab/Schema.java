@@ -16,6 +16,7 @@ public class Schema {
     public static final Property datePublished = baseModel.createProperty(baseUri + "datePublished");
     public static final Property genre = baseModel.createProperty(baseUri + "genre");
     public static final Property fromLocation = baseModel.createProperty(baseUri + "fromLocation");
+    public static final Property sameAs = baseModel.createProperty(baseUri + "sameAs");
 
     /** Classes **/
     public static final Resource MusicAlbum = baseModel.createResource(baseUri + "MusicAlbum");
