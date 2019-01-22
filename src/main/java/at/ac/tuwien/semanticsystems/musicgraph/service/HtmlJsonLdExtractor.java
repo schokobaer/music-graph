@@ -14,8 +14,13 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class HtmlJsonLdExtractor {
 
-    @Autowired
+
     private SimpleHttpClient httpClient;
+
+    @Autowired
+    public void setHttpClient(SimpleHttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     public JSONObject loadJsonLdByUrl(String resourceUri) {
         String html = httpClient.get(resourceUri);

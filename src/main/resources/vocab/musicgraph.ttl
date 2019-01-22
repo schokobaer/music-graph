@@ -5,6 +5,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <http://schema.org/> .
+@prefix wdt: <http://www.wikidata.org/prop/direct/> .
+@prefix wd: <http://www.wikidata.org/entity/> .
 @base <http://semantics.tuwien.ac.at/group4> .
 
 <http://semantics.tuwien.ac.at/group4> rdf:type owl:Ontology .
@@ -85,6 +87,7 @@
 #    Classes
 #################################################################
 
+
 ###  http://semantics.tuwien.ac.at/group4#AmazonMusicSong
 :AmazonMusicSong rdf:type owl:Class ;
                  rdfs:subClassOf :Song .
@@ -95,6 +98,11 @@
         rdfs:comment "Class for artists (performing songs)" ;
         rdfs:label "Artist" .
 
+###  http://semantics.tuwien.ac.at/group4#Song
+:Song rdf:type owl:Class ;
+      rdfs:comment "Class for songs" ;
+      rdfs:label "Song" ;
+      owl:equivalentClass wd:Q134556 .
 
 ###  http://semantics.tuwien.ac.at/group4#Decade
 :Decade rdf:type owl:Class .
@@ -102,7 +110,7 @@
 
 ###  http://semantics.tuwien.ac.at/group4#SpotifySong
 :SpotifySong rdf:type owl:Class ;
-             rdfs:subClassOf :AmazonMusicSong ;
+             rdfs:subClassOf :Song ;
              rdfs:comment "Class for Spotify songs" ;
              rdfs:label "Spotify Song" .
 
