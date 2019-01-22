@@ -92,6 +92,7 @@ public class YoutubeVideoService {
                 songModel = htmlJsonLdExtractor.musicbrainzSongModel(songJson);
 
                 if (songModel == null) {
+                    // TODO: Try to get just the artist
                     i++;
                     continue;
                 }
@@ -159,6 +160,60 @@ public class YoutubeVideoService {
 
             }
 
+        }
+
+        return model;
+    }
+
+    public Model getArtists(Model model) {
+
+        ResIterator itr = model.listResourcesWithProperty(RDF.type, MusicGraph.YoutubeVideo);
+        while (itr.hasNext()) {
+            Resource video = itr.nextResource();
+
+            String videoTitle = video.getProperty(Schema.name).getLiteral().getString();
+
+            List<JSONObject> artistQueryResults = musicbrainzService.searchArtist(videoTitle);
+            if (artistQueryResults.isEmpty()) {
+                LOGGER.info("No query results for artist {}", videoTitle);
+                continue;
+            }
+            Model artistModel = null;
+            String artistUri = "";
+            int j = 0;
+            while (artistModel == null) {
+                artistUri = musicbrainzService.getArtistUrl(artistQueryResults.get(j));
+                JSONObject artistJson = htmlJsonLdExtractor.loadJsonLdByUrl(artistUri);
+                artistModel = htmlJsonLdExtractor.musicbrainzArtistModel(artistJson);
+
+                if (artistModel == null) {
+                    LOGGER.info("Could not find an Artist on musicBrainz for {}", videoTitle);
+                }
+
+                Resource artistResourceMusicBrainz = musicbrainzService.findArtistResource(artistModel);
+                String artist = artistResourceMusicBrainz.getProperty(Schema.name).getString();
+                if (!videoTitle.toLowerCase().contains(artist.toLowerCase())) {
+                    j++;
+                    continue;
+                }
+
+                String artistUrified = artist.toLowerCase().replaceAll(" ", "_");
+                Resource artistResource = model.getResource(MusicGraph.entityBaseUri + artistUrified);
+                if (artistResource.hasProperty(RDF.type, MusicGraph.Artist)) {
+                    continue;
+                }
+
+
+                StmtIterator stmtItr = artistResourceMusicBrainz.listProperties(Schema.sameAs);
+                while (stmtItr.hasNext()) {
+                    artistResource.addProperty(OWL.sameAs, stmtItr.nextStatement().getObject());
+                }
+                artistResource.addProperty(OWL.sameAs, model.getResource(artistUri));
+
+                artistResource.addProperty(Schema.name, artist);
+                artistResource.addProperty(RDF.type, MusicGraph.Artist);
+
+            }
         }
 
         return model;
