@@ -3,14 +3,18 @@ package at.ac.tuwien.semanticsystems.musicgraph.service;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.MusicGraph;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.Schema;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.WikiData;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.ResIterator;
-import org.apache.jena.rdf.model.Resource;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.jena.base.Sys;
+import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.RDF;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.List;
 
 
 public class YoutubeVideoServiceTest {
@@ -38,7 +42,12 @@ public class YoutubeVideoServiceTest {
         res.addProperty(RDF.type, MusicGraph.YoutubeVideo);
         res.addProperty(Schema.name, "Denkmal - Wir sind Helden");
         res.addProperty(MusicGraph.clickedAt, "15.01.2019, 13:35:23 MEZ");
-        res.addProperty(MusicGraph.clickedAt, "15.01.2019, 13:40:23 MEZ");
+
+        // Denkmal - Live
+        Resource res2 = model.createResource();
+        res2.addProperty(RDF.type, MusicGraph.YoutubeVideo);
+        res2.addProperty(Schema.name, "Wir sind Helden - Denkmal (Rock am Ring 2004) LIVE");
+        res2.addProperty(MusicGraph.clickedAt, "16.01.2019, 13:35:23 MEZ");
 
         Model result = youtubeVideoService.getMusicVideos(model);
         result.write(System.out, "TURTLE");
@@ -103,5 +112,144 @@ public class YoutubeVideoServiceTest {
         Assert.assertFalse(itr.hasNext());
     }
 
+    @Test
+    public void testWithYoutubeHistoryFile() throws IOException {
+        List<YoutubeVideoService.YoutubeVideo> videos = youtubeVideoService.parseFile("resources/wiedergabeverlauf.html");
+
+        Model model = ModelFactory.createDefaultModel();
+        for (YoutubeVideoService.YoutubeVideo video: videos) {
+            Resource res = model.createResource();
+            res.addProperty(RDF.type, MusicGraph.YoutubeVideo);
+            res.addProperty(Schema.name, video.getVideoTitle());
+            res.addProperty(MusicGraph.clickedAt, video.getViewDate());
+        }
+
+        Model result = youtubeVideoService.getMusicVideos(model);
+        result.write(System.out, "TURTLE");
+    }
+
+    @Test
+    public void testWithYoutubeHistoryFileForArtists() throws IOException {
+        List<YoutubeVideoService.YoutubeVideo> videos = youtubeVideoService.parseFile("resources/wiedergabeverlauf.html");
+
+        Model model = ModelFactory.createDefaultModel();
+        for (YoutubeVideoService.YoutubeVideo video: videos) {
+            Resource res = model.createResource();
+            res.addProperty(RDF.type, MusicGraph.YoutubeVideo);
+            res.addProperty(Schema.name, video.getVideoTitle());
+            res.addProperty(MusicGraph.clickedAt, video.getViewDate());
+        }
+
+        Model result = youtubeVideoService.getArtists(model);
+
+        int sum = 0;
+        StmtIterator itr = result.listStatements(null, RDF.type, MusicGraph.Artist);
+        while (itr.hasNext()) {
+            sum++;
+            System.out.println(itr.nextStatement().getSubject().getProperty(Schema.name).getString());
+        }
+        System.out.println("Found Artists:" + sum);
+
+        result.write(System.out, "TURTLE");
+    }
+
+    @Test
+    public void getAllDataWithArtistsAndSongs() throws IOException {
+        List<YoutubeVideoService.YoutubeVideo> videos = youtubeVideoService.parseFile("resources/wiedergabeverlauf.html");
+
+        Model model = ModelFactory.createDefaultModel();
+        for (YoutubeVideoService.YoutubeVideo video: videos) {
+            Resource res = model.createResource();
+            res.addProperty(RDF.type, MusicGraph.YoutubeVideo);
+            res.addProperty(Schema.name, video.getVideoTitle());
+            res.addProperty(MusicGraph.clickedAt, video.getViewDate());
+        }
+
+        Model result = youtubeVideoService.getMusicVideos(model);
+        result = youtubeVideoService.getArtists(result);
+
+        // Check artists
+        int sum = 0;
+        StmtIterator itr = result.listStatements(null, RDF.type, MusicGraph.Artist);
+        while (itr.hasNext()) {
+            sum++;
+            System.out.println(itr.nextStatement().getSubject().getProperty(Schema.name).getString());
+        }
+        System.out.println("Found Artists:" + sum);
+
+        // Check songs
+        sum = 0;
+        itr = result.listStatements(null, RDF.type, MusicGraph.YoutubeSongVideo);
+        while (itr.hasNext()) {
+            sum++;
+            System.out.println(itr.nextStatement().getSubject().getProperty(Schema.name).getString());
+        }
+        System.out.println("Found Songs:" + sum);
+
+    }
+
+
+    @Test
+    public void convertYoutubeToRdf() throws IOException {
+        List<YoutubeVideoService.YoutubeVideo> videos = youtubeVideoService.parseFile("resources/youtube_2.html");
+
+        System.out.println("Size: " + videos.size());
+
+        Model model = ModelFactory.createDefaultModel();
+        for (YoutubeVideoService.YoutubeVideo video: videos) {
+            Resource res = model.getResource("http://sematics.tuwien.ac.at/group4/videos/" + URLEncoder.encode(video.getVideoTitle(), "UTF-8"));
+            res.addProperty(RDF.type, MusicGraph.YoutubeVideo);
+            res.addProperty(Schema.name, video.getVideoTitle());
+            res.addProperty(MusicGraph.clickedAt, video.getViewDate());
+        }
+
+        model.write(new FileOutputStream("resources/youtube_2.ttl"), "TURTLE");
+
+
+    }
+
+    @Test
+    public void getFirst100Songs() throws IOException {
+        System.out.println("Started parsing");
+        List<YoutubeVideoService.YoutubeVideo> videos = youtubeVideoService.parseFile("resources/youtube_2.html");
+        System.out.println("Finished Parsing");
+
+        System.out.println("Size: " + videos.size());
+
+        long time = System.currentTimeMillis();
+
+        Model model = ModelFactory.createDefaultModel();
+        Model targetModel = ModelFactory.createDefaultModel();
+        for (int i = 0; i < videos.size() && i < 100; i++) {
+            YoutubeVideoService.YoutubeVideo video = videos.get(i);
+            Resource res = model.getResource("http://sematics.tuwien.ac.at/group4/videos/" + URLEncoder.encode(video.getVideoTitle(), "UTF-8"));
+            res.addProperty(RDF.type, MusicGraph.YoutubeVideo);
+            res.addProperty(Schema.name, video.getVideoTitle());
+            res.addProperty(MusicGraph.clickedAt, video.getViewDate());
+            System.out.print("\rConverting " + i);
+            targetModel = targetModel.union(youtubeVideoService.getMusicVideo(res, targetModel));
+        }
+        System.out.println("Finished Converting: " + ((System.currentTimeMillis() - time) / 1000) + " seconds");
+
+        // Check artists
+        int sum = 0;
+        StmtIterator itr = targetModel.listStatements(null, RDF.type, MusicGraph.Artist);
+        while (itr.hasNext()) {
+            sum++;
+            System.out.println(itr.nextStatement().getSubject().getProperty(Schema.name).getString());
+        }
+        System.out.println("Found Artists:" + sum);
+
+        // Check songs
+        sum = 0;
+        itr = targetModel.listStatements(null, RDF.type, MusicGraph.YoutubeSongVideo);
+        while (itr.hasNext()) {
+            sum++;
+            Resource song = itr.nextStatement().getSubject();
+
+            System.out.println(song.getProperty(Schema.name).getString() + ":" + song.getProperty(MusicGraph.listenedAt));
+        }
+        System.out.println("Found Songs:" + sum);
+    }
 
 }
