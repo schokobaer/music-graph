@@ -29,14 +29,14 @@ import at.ac.tuwien.semanticsystems.musicgraph.vocab.Schema;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
-import org.apache.jena.rdf.model.Literal;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.*;
 import org.apache.jena.sparql.core.DatasetImpl;
 import org.apache.jena.rdfconnection.RDFConnection;
 import org.apache.jena.rdfconnection.RDFConnectionFactory;
 import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.XMLSchema;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
 import org.json.JSONObject;
@@ -52,10 +52,7 @@ import javax.ws.rs.client.ClientBuilder;
 import java.nio.file.Paths;
 import java.text.Normalizer;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootApplication
 public class Application {
@@ -98,10 +95,30 @@ public class Application {
                             .build();
 
             org.eclipse.rdf4j.model.Model resultAmazon = mapperAmazon.map(mappingAmazon);
+
+            List<org.eclipse.rdf4j.model.Statement> statements = new ArrayList<>();
+            Iterator<org.eclipse.rdf4j.model.Statement> it = resultAmazon.iterator();
+            while (it.hasNext()) {
+                    org.eclipse.rdf4j.model.Statement statement = it.next();
+                    if (statement.getPredicate().getLocalName().equals("creditedTo")) {
+                        String artistId = statement.getObject().stringValue();
+                        String artistName = artistMapping.get(artistId);
+
+                        org.eclipse.rdf4j.model.Resource resource = statement.getSubject();
+                        IRI predicate = statement.getPredicate();
+                        Value val = statement.getObject();
+                        Value newVal = SimpleValueFactory.getInstance().createLiteral(artistName, XMLSchema.STRING);
+
+                        it.remove();
+                        statements.add(SimpleValueFactory.getInstance().createStatement(resource, predicate, newVal));
+                    }
+            }
+
+            for (org.eclipse.rdf4j.model.Statement stm : statements) {
+                resultAmazon.add(stm);
+            }
+
             Rio.write(resultAmazon,System.out,RDFFormat.TURTLE);
-
-
-
 
             Model dataModel = ModelFactory.createDefaultModel();
 
