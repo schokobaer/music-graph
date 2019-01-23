@@ -5,6 +5,7 @@ import at.ac.tuwien.semanticsystems.musicgraph.service.DiscogsService;
 import at.ac.tuwien.semanticsystems.musicgraph.service.HtmlJsonLdExtractor;
 import at.ac.tuwien.semanticsystems.musicgraph.service.MusicbrainzService;
 import at.ac.tuwien.semanticsystems.musicgraph.service.YoutubeVideoService;
+import at.ac.tuwien.semanticsystems.musicgraph.service.amazonArtistMapping.AmazonArtistService;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.MusicGraph;
 import com.taxonic.carml.engine.RmlMapper;
 import com.taxonic.carml.logical_source_resolver.JsonPathResolver;
@@ -50,6 +51,7 @@ import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @SpringBootApplication
@@ -65,8 +67,13 @@ public class Application {
     public CommandLineRunner youtubeHistoryToRdfDataGraphTest(HtmlJsonLdExtractor htmlJsonLdExtractor,
                                                               YoutubeVideoService youtubeVideoService,
                                                               MusicbrainzService musicbrainzService,
-                                                              DiscogsService discogsService) {
+                                                              DiscogsService discogsService, AmazonArtistService amazonArtistService) {
         return args -> {
+
+            /* test amazon artist service */
+            Map<String, String> artistMapping = amazonArtistService.getAmazonArtistMapping("resources/data/DSAR_Dominik_Scheffknecht_Mein_Song_Verlauf.csv");
+
+
             Model dataModel = ModelFactory.createDefaultModel();
 
             String youtubeHistoryFilePath = "resources/wiedergabeverlauf.html";
