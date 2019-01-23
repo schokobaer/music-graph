@@ -3,13 +3,17 @@ package at.ac.tuwien.semanticsystems.musicgraph.service;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.MusicGraph;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.Schema;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.WikiData;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.jena.base.Sys;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.RDF;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 
@@ -184,5 +188,68 @@ public class YoutubeVideoServiceTest {
 
     }
 
+
+    @Test
+    public void convertYoutubeToRdf() throws IOException {
+        List<YoutubeVideoService.YoutubeVideo> videos = youtubeVideoService.parseFile("resources/youtube_2.html");
+
+        System.out.println("Size: " + videos.size());
+
+        Model model = ModelFactory.createDefaultModel();
+        for (YoutubeVideoService.YoutubeVideo video: videos) {
+            Resource res = model.getResource("http://sematics.tuwien.ac.at/group4/videos/" + URLEncoder.encode(video.getVideoTitle(), "UTF-8"));
+            res.addProperty(RDF.type, MusicGraph.YoutubeVideo);
+            res.addProperty(Schema.name, video.getVideoTitle());
+            res.addProperty(MusicGraph.clickedAt, video.getViewDate());
+        }
+
+        model.write(new FileOutputStream("resources/youtube_2.ttl"), "TURTLE");
+
+
+    }
+
+    @Test
+    public void getFirst100Songs() throws IOException {
+        System.out.println("Started parsing");
+        List<YoutubeVideoService.YoutubeVideo> videos = youtubeVideoService.parseFile("resources/youtube_2.html");
+        System.out.println("Finished Parsing");
+
+        System.out.println("Size: " + videos.size());
+
+        long time = System.currentTimeMillis();
+
+        Model model = ModelFactory.createDefaultModel();
+        Model targetModel = ModelFactory.createDefaultModel();
+        for (int i = 0; i < videos.size() && i < 100; i++) {
+            YoutubeVideoService.YoutubeVideo video = videos.get(i);
+            Resource res = model.getResource("http://sematics.tuwien.ac.at/group4/videos/" + URLEncoder.encode(video.getVideoTitle(), "UTF-8"));
+            res.addProperty(RDF.type, MusicGraph.YoutubeVideo);
+            res.addProperty(Schema.name, video.getVideoTitle());
+            res.addProperty(MusicGraph.clickedAt, video.getViewDate());
+            System.out.print("\rConverting " + i);
+            targetModel = targetModel.union(youtubeVideoService.getMusicVideo(res, targetModel));
+        }
+        System.out.println("Finished Converting: " + ((System.currentTimeMillis() - time) / 1000) + " seconds");
+
+        // Check artists
+        int sum = 0;
+        StmtIterator itr = targetModel.listStatements(null, RDF.type, MusicGraph.Artist);
+        while (itr.hasNext()) {
+            sum++;
+            System.out.println(itr.nextStatement().getSubject().getProperty(Schema.name).getString());
+        }
+        System.out.println("Found Artists:" + sum);
+
+        // Check songs
+        sum = 0;
+        itr = targetModel.listStatements(null, RDF.type, MusicGraph.YoutubeSongVideo);
+        while (itr.hasNext()) {
+            sum++;
+            Resource song = itr.nextStatement().getSubject();
+
+            System.out.println(song.getProperty(Schema.name).getString() + ":" + song.getProperty(MusicGraph.listenedAt));
+        }
+        System.out.println("Found Songs:" + sum);
+    }
 
 }
