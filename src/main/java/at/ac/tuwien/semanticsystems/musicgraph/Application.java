@@ -98,10 +98,6 @@ public class Application {
                             .build();
 
             org.eclipse.rdf4j.model.Model resultAmazon = mapperAmazon.map(mappingAmazon);
-
-            for (IRI a : resultAmazon.predicates()) {
-                resultAmazon.add()
-            }
             Rio.write(resultAmazon,System.out,RDFFormat.TURTLE);
 
 
