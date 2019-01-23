@@ -131,6 +131,16 @@
             <artifactId>jersey-hk2</artifactId>
             <version>2.27</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>2.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>2.50.0</version>
+        </dependency>
 
     </dependencies>
 
@@ -139,6 +149,7 @@
         <thymeleaf-layout-dialect.version>2.2.2</thymeleaf-layout-dialect.version>
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
     </properties>
+
 
 
     <build>
