@@ -86,6 +86,10 @@ public class YoutubeVideoService {
         while (songModel == null) {
             String musicbrainzSongUri = musicbrainzService.getSongUrl(queryResults.get(i));
             songJson = htmlJsonLdExtractor.loadJsonLdByUrl(musicbrainzSongUri);
+            if (songJson == null) {
+                i++;
+                continue;
+            }
             songModel = htmlJsonLdExtractor.musicbrainzSongModel(songJson);
 
             if (songModel == null) {
