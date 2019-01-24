@@ -96,29 +96,6 @@ public class Application {
                     LOGGER.info("Could not find a MusicRelease on MusicBrainz for {}", video.getVideoTitle());
                 }
 
-                Set<TriplesMap> mapping =
-                        RmlMappingLoader
-                                .build()
-                                .load(RDFFormat.TURTLE, Paths.get("resources/spotifyMapping.ttl"));
-
-                String test = Paths.get("resources").toAbsolutePath().toString();
-                String abc = "";
-                RmlMapper mapper =
-                        RmlMapper
-                                .newBuilder()
-                                // Add the resolvers to suit your need
-                                .setLogicalSourceResolver(Rdf.Ql.JsonPath, new JsonPathResolver())
-                                // optional:
-                                // specify IRI unicode normalization form (default = NFC)
-                                // see http://www.unicode.org/unicode/reports/tr15/tr15-23.html
-                                .iriUnicodeNormalization(Normalizer.Form.NFKC)
-                                // set file directory for sources in mapping
-                                .fileResolver(Paths.get("resources/data"))
-                                .build();
-
-                org.eclipse.rdf4j.model.Model result = mapper.map(mapping);
-                Rio.write(result,System.out,RDFFormat.TURTLE);
-
 
                 // Find Artist on MusicBrainz
                 String artist = musicbrainzJson.getString("creditedTo");
