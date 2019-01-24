@@ -71,6 +71,7 @@ public class Application {
         return args -> {
 
             /* test amazon artist service */
+            System.out.println("ich bin ein testcommit");
             Map<String, String> artistMapping = amazonArtistService.getAmazonArtistMapping("resources/data/DSAR_Dominik_Scheffknecht_Mein_Song_Verlauf_TestSet.csv");
 
             Set<TriplesMap> mappingAmazon =
