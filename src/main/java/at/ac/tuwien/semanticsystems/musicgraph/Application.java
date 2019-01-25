@@ -74,85 +74,9 @@ public class Application {
             LOGGER.info("Found Videos in youtube history: {}", youtubeVideos.size());
 
             for (YoutubeVideoService.YoutubeVideo video: youtubeVideos) {
-                // Query for releases on musicbrainz
-                List<JSONObject> queryResults = musicbrainzService.searchSong(video.getVideoTitle());
-                if (queryResults.isEmpty()) {
-                    LOGGER.info("No query results for video {}", video.getVideoTitle());
-                    continue;
-                }
-                LOGGER.info("Found query results for video {}: {}", video.getVideoTitle(), queryResults.size());
-
-                // Get Song RDF Model from MusicBrainz
-                Model musicbrainzModel = null;
-                JSONObject musicbrainzJson = null;
-                int i = 0;
-                while (musicbrainzModel == null) {
-                    String musicbrainzSongUri = musicbrainzService.getSongUrl(queryResults.get(i));
-                    musicbrainzJson = htmlJsonLdExtractor.loadJsonLdByUrl(musicbrainzSongUri);
-                    musicbrainzModel = htmlJsonLdExtractor.musicbrainzSongModel(musicbrainzJson);
-                    i++;
-                }
-                if (musicbrainzModel == null) {
-                    LOGGER.info("Could not find a MusicRelease on MusicBrainz for {}", video.getVideoTitle());
-                }
-
-
-                // Find Artist on MusicBrainz
-                String artist = musicbrainzJson.getString("creditedTo");
-                queryResults = musicbrainzService.searchArtist(artist);
-                if (queryResults.isEmpty()) {
-                    LOGGER.info("No query results for artist {}", artist);
-                    continue;
-                }
-                Model artistModel = null;
-                i = 0;
-                while (artistModel == null) {
-                    String artistUri = musicbrainzService.getArtistUrl(queryResults.get(i));
-                    JSONObject artistJson = htmlJsonLdExtractor.loadJsonLdByUrl(artistUri);
-                    artistModel = htmlJsonLdExtractor.musicbrainzArtistModel(artistJson);
-                }
-                if (artistModel == null) {
-                    LOGGER.info("Could not find an Artist on musicBrainz for {}", artist);
-                }
-                Resource artistResource = musicbrainzService.findArtistResource(artistModel);
 
 
 
-
-                // Add date and increase listenings; override artist resource
-                Resource songResource = musicbrainzService.findSongResource(musicbrainzModel);
-                if (songResource != null) {
-                    songResource.addProperty(MusicGraph.listenedAt, video.getViewDate());
-                    int amountListenings = 1;
-                    if (songResource.hasProperty(MusicGraph.numberListenings)) {
-                        amountListenings = songResource.getProperty(MusicGraph.numberListenings).getObject().asLiteral().getInt();
-                        amountListenings++;
-                        songResource.removeAll(MusicGraph.numberListenings);
-                    }
-                    songResource.addProperty(MusicGraph.numberListenings, amountListenings + "");
-                    songResource.removeAll(Schema.creditedTo);
-                    songResource.addProperty(Schema.creditedTo, artistResource);
-                }
-
-                // Merge
-                dataModel = dataModel.union(musicbrainzModel).union(artistModel);
-                LOGGER.info("Merged musicbrainz model from {}", video.getVideoTitle());
-
-
-                // Optional: Discogs Model linked by musicbrainz
-                if (musicbrainzJson.has("sameAs")
-                        && !discogsService.findDiscogsUri(musicbrainzJson.get("sameAs")).isEmpty()) {
-                    String discogsSongUri = discogsService.findDiscogsUri(musicbrainzJson.get("sameAs"));
-                    JSONObject discogsJson = htmlJsonLdExtractor.loadJsonLdByUrl(discogsSongUri);
-                    if (discogsJson == null) {
-                        continue;
-                    }
-                    Model discogsModel = htmlJsonLdExtractor.discogsModel(discogsJson);
-                    dataModel = dataModel.union(discogsModel);
-                    LOGGER.info("Found discogs URI for video {}", video.getVideoTitle());
-                }
-
-            }
 
             // Print data graph
             dataModel.write(System.out, "TURTLE");
@@ -238,7 +162,7 @@ public class Application {
                 } catch (BITException e) {
                     System.err.println("No events for this artist found");
                 }
-
+            }
             }
         };
     }
