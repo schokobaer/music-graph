@@ -69,15 +69,6 @@ public class Application {
         return args -> {
             Model dataModel = ModelFactory.createDefaultModel();
 
-            String youtubeHistoryFilePath = "resources/wiedergabeverlauf.html";
-            List<YoutubeVideoService.YoutubeVideo> youtubeVideos = youtubeVideoService.parseFile(youtubeHistoryFilePath);
-            LOGGER.info("Found Videos in youtube history: {}", youtubeVideos.size());
-
-            for (YoutubeVideoService.YoutubeVideo video: youtubeVideos) {
-
-
-
-
             // Print data graph
             dataModel.write(System.out, "TURTLE");
 
@@ -162,7 +153,6 @@ public class Application {
                 } catch (BITException e) {
                     System.err.println("No events for this artist found");
                 }
-            }
             }
         };
     }
