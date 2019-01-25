@@ -69,6 +69,8 @@ public class YoutubeVideoService {
         this.htmlJsonLdExtractor = htmlJsonLdExtractor;
     }
 
+
+
     public Model getMusicVideo(Resource video, Model model) {
         String videoTitle = video.getProperty(Schema.name).getLiteral().getString();
 
@@ -90,7 +92,7 @@ public class YoutubeVideoService {
                 i++;
                 continue;
             }
-            songModel = htmlJsonLdExtractor.musicbrainzSongModel(songJson);
+            songModel = musicbrainzService.getSongModel(songJson);
 
             if (songModel == null) {
                 // TODO: Try to get just the artist
@@ -136,7 +138,7 @@ public class YoutubeVideoService {
                 while (artistModel == null) {
                     artistUri = musicbrainzService.getArtistUrl(artistQueryResults.get(j));
                     JSONObject artistJson = htmlJsonLdExtractor.loadJsonLdByUrl(artistUri);
-                    artistModel = htmlJsonLdExtractor.musicbrainzArtistModel(artistJson);
+                    artistModel = musicbrainzService.getArtistModel(artistJson);
                 }
                 if (artistModel == null) {
                     LOGGER.info("Could not find an Artist on musicBrainz for {}", artist);
@@ -203,7 +205,7 @@ public class YoutubeVideoService {
         while (artistModel == null) {
             artistUri = musicbrainzService.getArtistUrl(artistQueryResults.get(j));
             JSONObject artistJson = htmlJsonLdExtractor.loadJsonLdByUrl(artistUri);
-            artistModel = htmlJsonLdExtractor.musicbrainzArtistModel(artistJson);
+            artistModel = musicbrainzService.getArtistModel(artistJson);
 
             if (artistModel == null) {
                 LOGGER.info("Could not find an Artist on musicBrainz for {}", videoTitle);
