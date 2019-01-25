@@ -1,9 +1,13 @@
 package at.ac.tuwien.semanticsystems.musicgraph.service;
 
+import at.ac.tuwien.semanticsystems.musicgraph.util.JsonUtil;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.jena.rdf.model.Model;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+@Deprecated
 @Component
 public class DiscogsService {
 
@@ -37,5 +41,11 @@ public class DiscogsService {
         }
 
         return "";
+    }
+
+    public Model discogsModel(JSONObject json) {
+        JSONObject neededJson = JsonUtil.copyOptionalFields(json,
+                "name", "@id", "@context", "@type", "releaseOf");
+        return JsonUtil.jsonLdToModel(neededJson, "https://www.discogs.com/");
     }
 }
