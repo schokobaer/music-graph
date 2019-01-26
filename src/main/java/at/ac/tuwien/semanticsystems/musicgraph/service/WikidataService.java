@@ -21,8 +21,9 @@ public class WikidataService {
 
     public static final String SELECT_ARTIST_INFO = "query/wikidata.artistinfo.rq";
     public static final String CONSTRUCT_SONG_INFO = "query/wikidata.songinfo.rq";
-    public static final String GET_ARTIST_FROM_GENRE = "query/wikidata.constructSimilarArtistGenre.rq";
-    public static final String GET_ARTIST_FROM_COUNTRY = "query/wikidata.constructSimilarArtistCountry.rq";
+    public static final String GET_ARTIST_FROM_GENRE = "query/wikidata.selectSimilarArtistGenre.rq";
+    public static final String GET_ARTIST_FROM_COUNTRY = "query/wikidata.selectSimilarArtistCountry.rq";
+    public static final String GET_ARTIST_FROM_DECADE = "query/wikidata.selectSimilarArtistDecade.rq";
 
 
     private QueryExecution getQueryExecution(String sparqlQuery, Map<String, String> replacements) {
@@ -42,8 +43,8 @@ public class WikidataService {
         return queryExecution;
     }
 
-    public List<Map<String, RDFNode>> querySelect(String sparqlQuery) {
-        QueryExecution queryExecution = getQueryExecution(sparqlQuery, null);
+    public List<Map<String, RDFNode>> querySelect(String sparqlQuery, Map<String, String> replacements) {
+        QueryExecution queryExecution = getQueryExecution(sparqlQuery, replacements);
         try {
             ResultSet results = queryExecution.execSelect();
             List<Map<String, RDFNode>> table = new LinkedList<>();
@@ -52,8 +53,8 @@ public class WikidataService {
                 Map<String, RDFNode> map = new HashMap<>();
                 for (String var: results.getResultVars()) {
                     map.put(var, solution.get(var));
-                    table.add(map);
                 }
+                table.add(map);
             }
             return table;
         } finally {
@@ -62,7 +63,7 @@ public class WikidataService {
     }
 
     public Map<String, RDFNode> querySingleSelect(String sparqlQuery) {
-        List<Map<String, RDFNode>> results = querySelect(sparqlQuery);
+        List<Map<String, RDFNode>> results = querySelect(sparqlQuery, null);
         if (results.isEmpty()) {
             return null;
         }

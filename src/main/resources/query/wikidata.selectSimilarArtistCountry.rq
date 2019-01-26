@@ -1,0 +1,29 @@
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+PREFIX schema: <http://schema.org/>
+
+
+SELECT DISTINCT ?band ?bandLabel
+   WHERE {
+     VALUES (?p) {
+       (wdt:P495)
+       (wdt:P740)
+       (wdt:P27)
+     }
+     VALUES (?q) {
+       (wdt:P495)
+       (wdt:P740)
+       (wdt:P27)
+     }
+     $paramArtist ?p ?location.
+     ?band ?q ?location.
+     ?band wdt:P1902 ?spotifyID.
+     ?band rdfs:label ?bandLabel.
+      filter (lang(?bandLabel) = 'de')
+   }

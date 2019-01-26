@@ -7,25 +7,12 @@ PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX bd: <http://www.bigdata.com/rdf#>
 PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-
-CONSTRUCT {
-  ?band schema:fromLocation ?location.
-  ?band schema:similarTo $paramArtist.
-}
-WHERE {
-  VALUES (?p) {
-    (wdt:P495)
-    (wdt:P740)
-    (wdt:P27)
-  }
-  VALUES (?q) {
-    (wdt:P495)
-    (wdt:P740)
-    (wdt:P27)
-  }
-  $paramArtist ?p ?location.
-  ?band ?q ?location.
-  ?band wdt:P31 wd:Q215380.
+SELECT DISTINCT ?band ?bandLabel ?year WHERE {
+  $paramArtist wdt:P571 ?queryYear.
+  ?band wdt:P571 ?year.
   ?band wdt:P1902 ?spotifyID.
+  ?band rdfs:label ?bandLabel.
+  FILTER((LANG(?bandLabel)) = "de" && ( 10 * (xsd:integer(YEAR(?year) / 10))) = ( 10 * (xsd:integer(YEAR(?queryYear) / 10))))
 }

@@ -1,11 +1,13 @@
 package at.ac.tuwien.semanticsystems.musicgraph.service;
 
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -19,36 +21,24 @@ public class WikiDataQueryService {
 
 
     public Map<String, String> getSimilarArtistsGenre(String artistName) {
+        Map<String, String> params = getQueryParamWikiDataID(artistName);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_ARTIST_FROM_GENRE, params);
 
-        /* resolve wikidataURI */
-        String wikidataId = musicbrainzService.getWikidataResourceByArtistName("Alter Bridge");
-        wikidataId = "wd:" + wikidataId.substring(wikidataId.lastIndexOf('Q'));
-
-        Map<String, String> params = new HashMap<>();
-        params.put("$paramArtist", wikidataId);
-
-        return params;
-
+        return createArtistMap(result);
     }
 
     public Map<String, String> getSimilarArtistsCountry(String artistName) {
-        Map<String, String> similarArtists = new HashMap<>();
-        //TODO query artists
-        /* dummy impl */
-        similarArtists.put("Alter Bridge", "wd:Q335036");
-        similarArtists.put("Die Toten Hosen", "wd:Q32461");
-        similarArtists.put("Billy Talent", "wd:Q154815");
-        return similarArtists;
+        Map<String, String> params = getQueryParamWikiDataID(artistName);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_ARTIST_FROM_COUNTRY, params);
+
+        return createArtistMap(result);
     }
 
     public Map<String, String> getSimilarArtistsDecade(String artistName) {
-        Map<String, String> similarArtists = new HashMap<>();
-        //TODO query artists
-        /* dummy impl */
-        similarArtists.put("Alter Bridge", "wd:Q335036");
-        similarArtists.put("Die Toten Hosen", "wd:Q32461");
-        similarArtists.put("Billy Talent", "wd:Q154815");
-        return similarArtists;
+        Map<String, String> params = getQueryParamWikiDataID(artistName);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_ARTIST_FROM_DECADE, params);
+
+        return createArtistMap(result);
     }
 
     public Map<String, String> getSimilarSongsGenre(String songName) {
@@ -61,7 +51,28 @@ public class WikiDataQueryService {
         return similarArtists;
     }
 
-    public void setWikidataService(WikidataService wikidataService) {
+
+    private Map<String, String> getQueryParamWikiDataID(String artistName) {
+        /* resolve wikidataURI */
+        String wikidataId = musicbrainzService.getWikidataResourceByArtistName(artistName);
+        wikidataId = "wd:" + wikidataId.substring(wikidataId.lastIndexOf('Q'));
+
+        Map<String, String> params = new HashMap<>();
+        params.put("$paramArtist", wikidataId);
+        return params;
+    }
+
+    private Map<String, String> createArtistMap(List<Map<String, RDFNode>> queryResult) {
+        Map<String, String> map = new HashMap<>();
+
+        for (Map<String, RDFNode> row: queryResult) {
+            map.put(row.get("bandLabel").asLiteral().getString(), row.get("band").toString());
+        }
+        return map;
+    }
+
+    public void setWikidataServices(WikidataService wikidataService, MusicbrainzService musicbrainzService) {
         this.wikidataService = wikidataService;
+        this.musicbrainzService = musicbrainzService;
     }
 }

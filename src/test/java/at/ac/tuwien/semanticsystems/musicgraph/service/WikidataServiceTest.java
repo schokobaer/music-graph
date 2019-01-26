@@ -13,7 +13,7 @@ public class WikidataServiceTest {
     @Test
     public void querySongsOfLinkinPark() {
         WikidataService wikidataService = new WikidataService();
-        List<Map<String, RDFNode>> results = wikidataService.querySelect(WikidataService.SELECT_ARTIST_INFO);
+        List<Map<String, RDFNode>> results = wikidataService.querySelect(WikidataService.SELECT_ARTIST_INFO, null);
 
         for (Map<String, RDFNode> row: results) {
             System.out.println(row.get("lbl").asLiteral().getString());
@@ -34,8 +34,10 @@ public class WikidataServiceTest {
         Map<String, String> params = new HashMap<>();
         params.put("$paramArtist", "wd:Q335036");
         WikidataService wikidataService = new WikidataService();
-        Model result = wikidataService.queryGraph(WikidataService.GET_ARTIST_FROM_GENRE, params);
-        result.write(System.out, "TURTLE");
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(WikidataService.GET_ARTIST_FROM_COUNTRY, params);
+        for (Map<String, RDFNode> row: result) {
+            System.out.println(row.get("bandLabel").asLiteral().getString() + " " + row.get("band").toString());
+        }
 
     }
 }

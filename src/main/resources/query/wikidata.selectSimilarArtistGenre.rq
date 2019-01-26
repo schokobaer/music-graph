@@ -8,13 +8,11 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX bd: <http://www.bigdata.com/rdf#>
 PREFIX schema: <http://www.schema.org/>
 
-CONSTRUCT {
-  ?Band schema:genre ?Musikgenre ;
-   schema:similarTo $paramArtist .
-} WHERE {
-     ?Musikgenre wdt:P31 wd:Q188451.
-     $paramArtist wdt:P136 ?Musikgenre.
-     ?Band wdt:P31 wd:Q215380.
-     ?Band wdt:P136 ?Musikgenre.
-     ?Band wdt:P1902 ?spotifyID.
-}
+SELECT DISTINCT ?band ?bandLabel  WHERE {
+      ?Musikgenre wdt:P31 wd:Q188451.
+      $paramArtist wdt:P136 ?musikgenre.
+      ?band wdt:P136 ?musikgenre.
+      ?band wdt:P1902 ?spotifyID.
+      ?band rdfs:label ?bandLabel.
+      filter (lang(?bandLabel) = 'de')
+ }
