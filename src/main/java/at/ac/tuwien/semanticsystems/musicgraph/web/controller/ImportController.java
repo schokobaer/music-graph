@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
@@ -56,31 +57,47 @@ public class ImportController {
     }
 
     @PostMapping("/import/youtube")
-    public void youtube(@RequestParam("file") MultipartFile file) throws IOException {
+    public ModelAndView youtube(@RequestParam("file") MultipartFile file) throws IOException {
 
-        // Convert inputdata
-        File destFile = File.createTempFile("youtube", "001");
-        file.transferTo(destFile);
-        Model model = youtubeImport.importData(destFile);
+        try {
+            // Convert inputdata
+            File destFile = File.createTempFile("youtube", "001");
+            file.transferTo(destFile);
+            Model model = youtubeImport.importData(destFile);
 
-        updateData(model);
+            updateData(model);
 
-        destFile.delete();
+            destFile.delete();
+        } catch (Exception e) {
+            return new ModelAndView("uploadFinished", "message", "Upload failed");
+        }
+        return new ModelAndView("uploadFinished", "message", "Upload successful");
     }
 
     @PostMapping("/import/spotify")
-    public void spotify(@RequestParam("file") MultipartFile file) throws IOException {
-        throw new NotImplementedException();
+    public ModelAndView spotify(@RequestParam("file") MultipartFile file) throws IOException {
+        try {
+            throw new NotImplementedException();
+        } catch (Exception e) {
+            return new ModelAndView("uploadFinished", "message", "Upload failed");
+        }
+        //TODO: add when implemented
+        //return new ModelAndView("uploadFinished", "message", "Upload successful");
     }
 
     @PostMapping("/import/amazonmusic")
-    public void amazonMusic(@RequestParam("file") MultipartFile file) throws IOException {
-        File destFile = File.createTempFile("amazon", "001");
-        file.transferTo(destFile);
-        Model model = amazonImport.importData(destFile);
+    public ModelAndView amazonMusic(@RequestParam("file") MultipartFile file) throws IOException {
+        try {
+            File destFile = File.createTempFile("amazon", "001");
+            file.transferTo(destFile);
+            Model model = amazonImport.importData(destFile);
 
-        updateData(model);
+            updateData(model);
 
-        destFile.delete();
+            destFile.delete();
+        } catch (Exception e) {
+            return new ModelAndView("uploadFinished", "message", "Upload failed");
+        }
+        return new ModelAndView("uploadFinished", "message", "Upload successful");
     }
 }

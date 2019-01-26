@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!--<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">-->
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
@@ -11,6 +10,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
             integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
             crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/loading.css"/>
+    <script th:src="@{/js/loading.js}"></script>
 </head>
 
 <body>
@@ -26,13 +29,14 @@
     </section>
 
     <div class="col-md-12 text-center align-items-center">
-        <a class="btn btn-lg btn-primary"    href="/" role="button">Home</a>
+        <a class="btn btn-lg btn-primary" href="/" role="button">Home</a>
         <a class="btn btn-lg btn-primary" href="/favouriteArtists" role="button">Favourite artists</a>
-        <a class="btn btn-lg btn-primary" href="/favouriteArtists" role="button">Favourite artists</a>
-        <a class="btn btn-lg btn-primary" href="/favouriteArtists" role="button">Favourite artists</a>
+        <a class="btn btn-lg btn-primary" href="/uploadData" role="button">????</a>
     </div>
-    <div class="jumbotron" style="margin-top: 1em" layout:fragment="content">
-        <strong>Your results will be displayed here. Please select a button!</strong>
+    <div layout:fragment="content">
+        <div class="text-center" style="margin-top: 3em">
+            <a class="btn btn-lg btn-danger" href="/uploadData" role="button">Upload data</a>
+        </div>
     </div>
 </div>
 </body>

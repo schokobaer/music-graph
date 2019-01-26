@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="index">
+<head>
+    <title>Upload Data</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <div style="margin-top: 2em">
+        <div class="row align-items-center text-center" style="height: 5em">
+            <div class="col-12">
+                <div>
+                    <form id="myform" method="POST" enctype="multipart/form-data"
+                          action="/import/youtube" href="/">
+                        <img src="/img/youtube_logo.jpg" class="img-responsive" style="height: 10%; width: 10%;"
+                             alt="youtube logo"/>
+                        <input type="file" name="file"/>
+                        <input class="btn btn-lg btn-danger loading_button" type="submit" value="Upload"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center text-center" style="height: 5em">
+            <div class="col-12">
+                <div class="card-block">
+                    <form method="POST" enctype="multipart/form-data" action="/import/amazonmusic" href="/">
+                        <img src="/img/amazonmusic_logo.png" class="img-responsive" style="height: 10%; width: 10%"
+                             alt="amazonmusic logo"/>
+                        <input type="file" name="file"/>
+                        <input class="btn btn-lg btn-danger loading_button" type="submit" value="Upload" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center text-center" style="height: 5em">
+            <div class="col-12">
+                <div class="card-block">
+                    <form method="POST" enctype="multipart/form-data" action="/import/spotify" href="/">
+                        <img src="/img/spotify_logo.png" class="img-responsive" style="height: 10%; width: 10%"
+                             alt="spotify logo"/>
+                        <input type="file" name="file"/>
+                        <input class="btn btn-lg btn-danger loading_button" type="submit" value="Upload"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="spinner" class="spinner" style="display:none;">
+    </div>
+</div>
+
+</body>
+</html>

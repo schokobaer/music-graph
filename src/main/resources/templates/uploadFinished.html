@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="index">
+<head>
+    <title>Upload finished</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="text-center" style="margin-top: 3em">
+        <a class="btn btn-lg btn-danger" href="/uploadData" role="button">Upload data</a>
+    </div>
+    <div class="jumbotron" style="margin-top: 1em">
+        <strong th:text="${message}"></strong>
+    </div>
+</div>
+</body>
+</html>
