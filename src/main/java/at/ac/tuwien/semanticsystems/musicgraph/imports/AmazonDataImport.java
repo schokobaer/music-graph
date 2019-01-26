@@ -19,6 +19,7 @@ public class AmazonDataImport implements DataImport {
     public Model importData(File file) {
         org.eclipse.rdf4j.model.Model model;
         try {
+            //TODO proper conversion from rdf4j to jena Model
            return  (Model) service.getAmazonModel(file.getAbsolutePath());
         } catch (FileNotFoundException e) {
             //TODO exceptionhandling
