@@ -29,5 +29,12 @@ rr:predicateObjectMap [
     rr:objectMap [
     rml:reference "consumptionDurationMs"
     ]
+];
+
+rr:predicateObjectMap [
+    rr:predicate semantic:listenedTo;
+    rr:objectMap [
+    rml:reference "timestamp"
+    ]
 ].
 

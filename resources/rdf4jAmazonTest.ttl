@@ -1,0 +1,48 @@
+<http://sematics.tuwien.ac.at/group4/tracks/Return%20to%20Pooh%20Corner-B001Q99244>
+  a <http://sematics.tuwien.ac.at/group4#AmazonMusicSong>;
+  <http://schema.org/Duration> "253000";
+  <http://schema.org/creditedTo> "B001Q99244";
+  <http://sematics.tuwien.ac.at/group4#listenedTo> "2018-12-27 06:23:23 GMT" ;
+  <http://sematics.tuwien.ac.at/group4#numberListenings> "1" .
+
+
+<http://sematics.tuwien.ac.at/group4/tracks/I%27m%20Alright%20%28Theme%20from%20%22Caddyshack%22%29-B001Q99244>
+  a <http://sematics.tuwien.ac.at/group4#AmazonMusicSong>;
+  <http://schema.org/Duration> "226000";
+  <http://schema.org/creditedTo> "B001Q99244";
+  <http://sematics.tuwien.ac.at/group4#listenedTo> "2018-12-26 22:12:57 GMT" ;
+  <http://sematics.tuwien.ac.at/group4#numberListenings> "1" .
+
+
+<http://sematics.tuwien.ac.at/group4/tracks/Meet%20Me%20Half%20Way-B001Q99244> a <http://sematics.tuwien.ac.at/group4#AmazonMusicSong>;
+  <http://schema.org/Duration> "219000";
+  <http://schema.org/creditedTo> "B001Q99244";
+  <http://sematics.tuwien.ac.at/group4#listenedTo> "2018-12-26 22:07:13 GMT" ;
+  <http://sematics.tuwien.ac.at/group4#numberListenings> "1" .
+
+
+<http://sematics.tuwien.ac.at/group4/tracks/Danger%20Zone-B001Q99244> a <http://sematics.tuwien.ac.at/group4#AmazonMusicSong>;
+  <http://schema.org/Duration> "215000";
+  <http://schema.org/creditedTo> "B001Q99244";
+  <http://sematics.tuwien.ac.at/group4#listenedTo> "2018-12-26 22:03:37 GMT" ;
+  <http://sematics.tuwien.ac.at/group4#numberListenings> "1" .
+
+<http://sematics.tuwien.ac.at/group4/tracks/Nobody-B008YPZDV4> a <http://sematics.tuwien.ac.at/group4#AmazonMusicSong>;
+  <http://schema.org/Duration> "26000";
+  <http://schema.org/creditedTo> "B008YPZDV4";
+  <http://sematics.tuwien.ac.at/group4#listenedTo> "2018-12-25 17:12:58 GMT" ;
+  <http://sematics.tuwien.ac.at/group4#numberListenings> "1" .
+
+<http://sematics.tuwien.ac.at/group4/tracks/Rusted%20From%20The%20Rain-B001Q57WCC>
+  a <http://sematics.tuwien.ac.at/group4#AmazonMusicSong>;
+  <http://schema.org/Duration> "253000";
+  <http://schema.org/creditedTo> "B001Q57WCC";
+  <http://sematics.tuwien.ac.at/group4#listenedTo> "2018-07-12 21:25:02 GMT", "2018-07-13 21:25:02 GMT" ;
+  <http://sematics.tuwien.ac.at/group4#numberListenings> "2" .
+
+
+<http://sematics.tuwien.ac.at/group4/tracks/Come%20As%20You%20Are-B001Q9IRX6> a <http://sematics.tuwien.ac.at/group4#AmazonMusicSong>;
+  <http://schema.org/Duration> "218000";
+  <http://schema.org/creditedTo> "B001Q9IRX6";
+  <http://sematics.tuwien.ac.at/group4#listenedTo> "2018-07-13 21:20:48 GMT" ;
+  <http://sematics.tuwien.ac.at/group4#numberListenings> "1" .
