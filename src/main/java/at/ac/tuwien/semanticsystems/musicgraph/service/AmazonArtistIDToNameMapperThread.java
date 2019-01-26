@@ -1,4 +1,4 @@
-package at.ac.tuwien.semanticsystems.musicgraph.service.amazonArtistMapping;
+package at.ac.tuwien.semanticsystems.musicgraph.service;
 
 import at.ac.tuwien.semanticsystems.musicgraph.Application;
 import io.github.bonigarcia.wdm.DriverManagerType;

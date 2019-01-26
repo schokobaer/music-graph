@@ -9,7 +9,7 @@
 
 <#SongMapping>
 rml:logicalSource [
-        rml:source "DSAR_Dominik_Scheffknecht_Mein_Song_Verlauf_TestSet.csv";
+        rml:source "AmazonHistory.csv";
         rml:referenceFormulation ql:CSV ;
 ];
 rr:subjectMap [
