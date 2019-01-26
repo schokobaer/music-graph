@@ -1,6 +1,8 @@
 package at.ac.tuwien.semanticsystems.musicgraph.web.controller;
 
 import at.ac.tuwien.semanticsystems.musicgraph.web.Model.ArtistModel;
+import org.apache.jena.rdfconnection.RDFConnection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,4 +32,5 @@ public class MusicGraphController {
         model.addAttribute("artists", artists);
         return "favouriteArtists";
     }
+
 }
