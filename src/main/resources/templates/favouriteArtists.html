@@ -8,23 +8,25 @@
 
 <body>
 <div layout:fragment="content">
-    <table class="table table-bordered" th:if="${!artists.empty}">
-        <thead>
-        <tr>
-            <th>Artist</th>
-            <th>Best known song</th>
-            <th>Information</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="artist : ${artists}">
-            <td><strong th:text="${artist.getName()}"></strong></td>
-            <td><strong th:text="${artist.getBestKnownSong()}"></strong></td>
-            <td><a th:href="${artist.getUrl()}"><strong th:text="${artist.getUrl()}"> </strong></a></td>
-        </tr>
-        </tbody>
-    </table>
-    <strong th:if="${artists.empty}">No artists available!</strong>
+    <div class="jumbotron" style="margin-top: 1em">
+        <table class="table table-bordered" th:if="${!artists.empty}">
+            <thead>
+            <tr>
+                <th>Artist</th>
+                <th>Best known song</th>
+                <th>Information</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="artist : ${artists}">
+                <td><strong th:text="${artist.getName()}"></strong></td>
+                <td><strong th:text="${artist.getBestKnownSong()}"></strong></td>
+                <td><a th:href="${artist.getUrl()}"><strong th:text="${artist.getUrl()}"> </strong></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <strong th:if="${artists.empty}">No artists available!</strong>
+    </div>
 </div>
 </body>
 </html>

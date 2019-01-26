@@ -33,4 +33,9 @@ public class MusicGraphController {
         return "favouriteArtists";
     }
 
+    @RequestMapping("/uploadData")
+    public String uploadData(Model model){
+        return "uploadData";
+    }
+
 }
