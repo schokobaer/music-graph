@@ -36,10 +36,12 @@ public class ImportController {
     private String tbdPath;
 
     private DataImport youtubeImport;
+    private DataImport amazonImport;
 
     @Autowired
-    public void setYoutubeImport(@Qualifier("youtubeImport") DataImport youtubeImport) {
+    public void setYoutubeImport(@Qualifier("youtubeImport") DataImport youtubeImport, @Qualifier("amazonImport") DataImport amazonImport) {
         this.youtubeImport = youtubeImport;
+        this.amazonImport = amazonImport;
     }
 
     private void updateData(Model model) throws FileNotFoundException {
@@ -73,6 +75,12 @@ public class ImportController {
 
     @PostMapping("/import/amazonmusic")
     public void amazonMusic(@RequestParam("file") MultipartFile file) throws IOException {
-        throw new NotImplementedException();
+        File destFile = File.createTempFile("amazon", "001");
+        file.transferTo(destFile);
+        Model model = amazonImport.importData(destFile);
+
+        updateData(model);
+
+        destFile.delete();
     }
 }
