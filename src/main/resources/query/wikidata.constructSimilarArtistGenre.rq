@@ -1,0 +1,20 @@
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+PREFIX schema: <http://www.schema.org/>
+
+CONSTRUCT {
+  ?Band schema:genre ?Musikgenre ;
+   schema:similarTo wd:Q335036 .
+} WHERE {
+     ?Musikgenre wdt:P31 wd:Q188451.
+     wd:Q335036 wdt:P136 ?Musikgenre.
+     ?Band wdt:P31 wd:Q215380.
+     ?Band wdt:P136 ?Musikgenre.
+     ?Band wdt:P1902 ?spotifyID.
+}

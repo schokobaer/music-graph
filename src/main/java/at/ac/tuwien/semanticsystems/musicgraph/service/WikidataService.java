@@ -1,8 +1,6 @@
 package at.ac.tuwien.semanticsystems.musicgraph.service;
 
 import com.google.common.io.Resources;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
@@ -10,8 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +21,8 @@ public class WikidataService {
 
     public static final String SELECT_ARTIST_INFO = "query/wikidata.artistinfo.rq";
     public static final String CONSTRUCT_SONG_INFO = "query/wikidata.songinfo.rq";
+    public static final String GET_ARTIST_FROM_GENRE = "query/wikidata.constructSimilarArtistGenre.rq";
+    public static final String GET_ARTIST_FROM_COUNTRY = "query/wikidata.constructSimilarArtistCountry.rq";
 
 
     private QueryExecution getQueryExecution(String sparqlQuery) {

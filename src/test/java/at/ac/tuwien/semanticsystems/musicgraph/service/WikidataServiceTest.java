@@ -27,4 +27,12 @@ public class WikidataServiceTest {
         result.write(System.out, "TURTLE");
 
     }
+
+    @Test
+    public void queryGraphFromSimilarArtistsASAlterBridge() {
+        WikidataService wikidataService = new WikidataService();
+        Model result = wikidataService.queryGraph(WikidataService.GET_ARTIST_FROM_GENRE);
+        result.write(System.out, "TURTLE");
+
+    }
 }
