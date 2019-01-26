@@ -1,12 +1,8 @@
 package at.ac.tuwien.semanticsystems.musicgraph.service;
 
-import org.apache.jena.rdf.model.Model;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class DataLinkingServiceTest {
 
