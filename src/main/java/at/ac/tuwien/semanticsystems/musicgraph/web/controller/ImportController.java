@@ -1,15 +1,19 @@
 package at.ac.tuwien.semanticsystems.musicgraph.web.controller;
 
 import at.ac.tuwien.semanticsystems.musicgraph.imports.DataImport;
+import at.ac.tuwien.semanticsystems.musicgraph.tdb.TdbManager;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.Schema;
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdfconnection.RDFConnection;
+import org.apache.jena.rdfconnection.RDFConnectionFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.system.Txn;
+import org.apache.jena.tdb.TDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,20 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 
 @RestController
 public class ImportController {
 
     @Autowired
-    private RDFConnection con;
-
-    @Value("${tbd.path}")
-    private String tbdPath;
+    private TdbManager tdbManager;
 
     private DataImport youtubeImport;
     private DataImport amazonImport;
@@ -44,15 +42,11 @@ public class ImportController {
         this.amazonImport = amazonImport;
     }
 
-    private void updateData(Model model) throws FileNotFoundException {
-        Dataset dsg = con.fetchDataset();
-
-        // Write in TDB
-        Txn.executeWrite(dsg, () -> con.load(model));
-
-        // Write in TTL to persist
-        FileOutputStream fos = new FileOutputStream(new File(tbdPath));
-        Txn.executeRead(dsg, () -> dsg.getDefaultModel().write(fos, "TURTLE"));
+    private void updateData(Model model) {
+        Dataset tdb = tdbManager.getDataset();
+        RDFConnection con = RDFConnectionFactory.connect(tdb);
+        Txn.executeWrite(tdb, () -> con.load(model));
+        con.close();
     }
 
     @PostMapping("/import/youtube")
