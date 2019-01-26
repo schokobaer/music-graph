@@ -10,10 +10,10 @@ PREFIX schema: <http://www.schema.org/>
 
 CONSTRUCT {
   ?Band schema:genre ?Musikgenre ;
-   schema:similarTo wd:Q335036 .
+   schema:similarTo $paramArtist .
 } WHERE {
      ?Musikgenre wdt:P31 wd:Q188451.
-     wd:Q335036 wdt:P136 ?Musikgenre.
+     $paramArtist wdt:P136 ?Musikgenre.
      ?Band wdt:P31 wd:Q215380.
      ?Band wdt:P136 ?Musikgenre.
      ?Band wdt:P1902 ?spotifyID.

@@ -25,10 +25,13 @@ public class WikidataService {
     public static final String GET_ARTIST_FROM_COUNTRY = "query/wikidata.constructSimilarArtistCountry.rq";
 
 
-    private QueryExecution getQueryExecution(String sparqlQuery) {
+    private QueryExecution getQueryExecution(String sparqlQuery, Map<String, String> replacements) {
         String sparql = null;
         try {
             sparql = Resources.toString(Resources.getResource(sparqlQuery), Charset.forName("UTF-8"));
+            for (String key : replacements.keySet()) {
+                sparql = sparql.replace(key,replacements.get(key));
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -40,7 +43,7 @@ public class WikidataService {
     }
 
     public List<Map<String, RDFNode>> querySelect(String sparqlQuery) {
-        QueryExecution queryExecution = getQueryExecution(sparqlQuery);
+        QueryExecution queryExecution = getQueryExecution(sparqlQuery, null);
         try {
             ResultSet results = queryExecution.execSelect();
             List<Map<String, RDFNode>> table = new LinkedList<>();
@@ -66,8 +69,8 @@ public class WikidataService {
         return results.get(0);
     }
 
-    public Model queryGraph(String sparqlQuery) {
-        QueryExecution queryExecution = getQueryExecution(sparqlQuery);
+    public Model queryGraph(String sparqlQuery, Map<String, String> replacements) {
+        QueryExecution queryExecution = getQueryExecution(sparqlQuery, replacements);
         try {
             Model model = queryExecution.execConstruct();
             return model;
