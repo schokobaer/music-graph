@@ -1,14 +1,12 @@
 package at.ac.tuwien.semanticsystems.musicgraph.service;
 
-import org.apache.jena.rdf.model.Model;
+import at.ac.tuwien.semanticsystems.musicgraph.web.Model.ArtistModel;
+import at.ac.tuwien.semanticsystems.musicgraph.web.Model.GenreModel;
 import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class WikiDataQueryService {
@@ -18,7 +16,40 @@ public class WikiDataQueryService {
     private WikidataService wikidataService;
     @Autowired
     private MusicbrainzService musicbrainzService;
+    @Autowired
+    private TdbQueryService tdbQueryService;
 
+    public Map<String, String> getGenresOfArtistByName(String artistName) {
+        Map<String, String> params = getQueryParamWikiDataID(artistName);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_GENRES_OF_ARTIST, params);
+        return createGenreMap(result);
+    }
+
+    public Map<String, String> getGenresOfArtistByArtistWikiDataID(String artistWikiDataID) {
+        Map<String, String> params = new HashMap<>();
+        params.put("$paramArtist", "wd:" + artistWikiDataID);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_GENRES_OF_ARTIST, params);
+        return createGenreMap(result);
+    }
+
+    public List<GenreModel> getFavouriteGenres() {
+        List<ArtistModel> artists = tdbQueryService.getTopFiveFavouriteArtists();
+        Map<String, GenreModel> favouriteGenres = new HashMap<>();
+        for (ArtistModel artist : artists) {
+            Map<String, String> genres = getGenresOfArtistByArtistWikiDataID(artist.getArtistWikiDataID());
+            for(String genreKey : genres.keySet()) {
+                if(favouriteGenres.containsKey(genreKey)) {
+                    GenreModel existingGenre = favouriteGenres.get(genreKey);
+                    existingGenre.setNumberOfFavouriteBandsWithGenre(existingGenre.getNumberOfFavouriteBandsWithGenre() + 1);
+                } else {
+                    favouriteGenres.put(genreKey, new GenreModel(genres.get(genreKey), genres.get(genreKey), genreKey, 1));
+                }
+            }
+        }
+        List<GenreModel> genreList = new ArrayList<>(favouriteGenres.values());
+        genreList.sort(Comparator.comparing(GenreModel::getNumberOfFavouriteBandsWithGenre).reversed());
+        return genreList;
+    }
 
     public Map<String, String> getSimilarArtistsGenre(String artistName) {
         Map<String, String> params = getQueryParamWikiDataID(artistName);
@@ -71,8 +102,29 @@ public class WikiDataQueryService {
         return map;
     }
 
+    private Map<String, String> createGenreMap(List<Map<String, RDFNode>> queryResult) {
+        Map<String, String> map = new HashMap<>();
+
+        for (Map<String, RDFNode> row: queryResult) {
+            map.put(row.get("genreLabel").asLiteral().getString(), row.get("genre").toString());
+        }
+        return map;
+    }
+
     public void setWikidataServices(WikidataService wikidataService, MusicbrainzService musicbrainzService) {
         this.wikidataService = wikidataService;
         this.musicbrainzService = musicbrainzService;
+    }
+
+    private <K, V extends Comparable<? super V>> Map<K, V> sortMapByValue(Map<K, V> map) {
+        List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+
+        Map<K, V> result = new LinkedHashMap<>();
+        for (Map.Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
     }
 }

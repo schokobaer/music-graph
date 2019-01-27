@@ -113,5 +113,5 @@ semantic:listenedTo "2018-07-18 21:25:02 GMT"^^xsd:timestamp .
 
 artist:Red%20Hot%20Chili%20Peppers
 a semantic:Artist ;
-schema:sameAs wd:Q2095272 .
+schema:sameAs wd:Q10708 .
 

@@ -3,16 +3,18 @@ package at.ac.tuwien.semanticsystems.musicgraph.web.Model;
 public class ArtistModel {
     private String artistTdbUri;
     private String artistWikiDataUri;
+    private String artistWikiDataID;
     private int numberOfSongsListened;
     private String artistName;
 
     public ArtistModel() {
     }
 
-    public ArtistModel(String artistTdbUri, String artistName, String artistWikiDataUri, int numberOfSongsListened) {
+    public ArtistModel(String artistTdbUri, String artistName, String artistWikiDataUri, String artistWikiDataID, int numberOfSongsListened) {
         this.artistTdbUri = artistTdbUri;
         this.artistName = artistName;
         this.artistWikiDataUri = artistWikiDataUri;
+        this.artistWikiDataID = artistWikiDataID;
         this.numberOfSongsListened = numberOfSongsListened;
     }
 
@@ -30,6 +32,14 @@ public class ArtistModel {
 
     public void setArtistWikiDataUri(String artistWikiDataUri) {
         this.artistWikiDataUri = artistWikiDataUri;
+    }
+
+    public String getArtistWikiDataID() {
+        return artistWikiDataID;
+    }
+
+    public void setArtistWikiDataID(String artistWikiDataID) {
+        this.artistWikiDataID = artistWikiDataID;
     }
 
     public int getNumberOfSongsListened() {

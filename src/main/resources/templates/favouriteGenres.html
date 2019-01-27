@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="index">
+<head>
+    <title>Favourite Genres</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="jumbotron" style="margin-top: 1em">
+        <table class="table table-bordered" th:if="${!genres.empty}">
+            <thead>
+            <tr>
+                <th>Genre</th>
+                <th>Wiki Data URI</th>
+                <th>Number of favourite bands with this genre</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="genre : ${genres}">
+                <td><strong th:text="${genre.getGenreName()}"></strong></td>
+                <td><a th:href="${genre.getGenreWikiDataUri()}"><strong th:text="${genre.getGenreWikiDataUri()}"> </strong></a></td>
+                <td><strong th:text="${genre.getNumberOfFavouriteBandsWithGenre()}"></strong></td>
+            </tr>
+            </tbody>
+        </table>
+        <strong th:if="${genres.empty}">No genres available!</strong>
+    </div>
+</div>
+</body>
+</html>

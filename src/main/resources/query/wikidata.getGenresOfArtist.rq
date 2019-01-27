@@ -1,0 +1,16 @@
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+PREFIX schema: <http://www.schema.org/>
+
+ SELECT DISTINCT ?genreLabel ?genre WHERE {
+   ?genre wdt:P31 wd:Q188451.
+   $paramArtist wdt:P136 ?genre.
+   ?genre rdfs:label ?genreLabel.
+   filter (lang(?genreLabel) = 'de')
+ }
