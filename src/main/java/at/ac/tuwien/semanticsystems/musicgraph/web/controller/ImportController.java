@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.concurrent.Executor;
@@ -78,7 +79,7 @@ public class ImportController {
     }
 
     @PostMapping("/import/youtube")
-    public ModelAndView youtube(@RequestParam("file") MultipartFile file) throws IOException {
+    public void youtube(@RequestParam("file") MultipartFile file, HttpServletResponse response) throws IOException {
 
         // Convert inputdata
         File destFile = File.createTempFile("youtube", "001");
@@ -89,29 +90,35 @@ public class ImportController {
             updateData(model);
             destFile.delete();
         });
-
-        return new ModelAndView("uploadFinished", "message", "Upload successful");
+        response.sendRedirect("/uploadData");
     }
 
     @PostMapping("/import/spotify")
-    public ModelAndView spotify(@RequestParam("file") MultipartFile file) throws IOException {
+    public void spotify(@RequestParam("file") MultipartFile file, HttpServletResponse response) throws IOException {
         try {
             throw new NotImplementedException();
         } catch (Exception e) {
-            return new ModelAndView("uploadFinished", "message", "Upload failed");
+            e.printStackTrace();
         }
-        //TODO: add when implemented
-        //return new ModelAndView("uploadFinished", "message", "Upload successful");
+        response.sendRedirect("/uploadData");
     }
 
     @GetMapping("/import/spotify")
     public SseEmitter spotifyState() throws IOException {
-        //return getStateEmitter(null);
-        return null;
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+
+        ImportState state = new ImportState();
+        state.setProcessing(false);
+        state.setProgress(0);
+
+        emitter.send(state, MediaType.APPLICATION_JSON);
+        emitter.complete();
+
+        return emitter;
     }
 
     @PostMapping("/import/amazonmusic")
-    public ModelAndView amazonMusic(@RequestParam("file") MultipartFile file) throws IOException {
+    public void amazonMusic(@RequestParam("file") MultipartFile file, HttpServletResponse response) throws IOException {
         File destFile = File.createTempFile("amazon", "001");
         file.transferTo(destFile);
 
@@ -121,10 +128,10 @@ public class ImportController {
             destFile.delete();
         });
 
-        return new ModelAndView("uploadFinished", "message", "Upload successful");
+        response.sendRedirect("/uploadData");
     }
 
-    @GetMapping("/amazonmusic/youtube")
+    @GetMapping("/import/amazonmusic")
     public SseEmitter amazonMusicState() throws IOException {
         return getStateEmitter(amazonImport);
     }

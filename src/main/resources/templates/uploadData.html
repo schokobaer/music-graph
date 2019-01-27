@@ -19,7 +19,9 @@
                              alt="youtube logo"/>
                         <input type="file" name="file"/>
                         <input class="btn btn-lg btn-danger loading_button" type="submit" value="Upload"/>
-                        <span id="youtube-upload-progress">Progress: </span>
+                        <div class="progress" id="youtube-upload-progress">
+                          <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -33,6 +35,9 @@
                              alt="amazonmusic logo"/>
                         <input type="file" name="file"/>
                         <input class="btn btn-lg btn-danger loading_button" type="submit" value="Upload" />
+                        <div class="progress" id="amazonmusic-upload-progress">
+                            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -46,6 +51,9 @@
                              alt="spotify logo"/>
                         <input type="file" name="file"/>
                         <input class="btn btn-lg btn-danger loading_button" type="submit" value="Upload"/>
+                        <div class="progress" id="spotify-upload-progress">
+                            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                        </div>
                     </form>
                 </div>
             </div>
