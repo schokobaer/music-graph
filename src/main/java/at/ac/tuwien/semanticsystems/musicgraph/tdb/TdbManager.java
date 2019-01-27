@@ -26,18 +26,6 @@ public class TdbManager {
         Location location = Location.create(tdbPath);
         StoreParams storeParams = StoreParams.getSmallStoreParams();
         TDBFactory.setup(location, storeParams);
-
-        //TODO: change this --> Loading testdata for testing of queries
-        org.apache.jena.rdf.model.Model vocab = ModelFactory.createDefaultModel() ;
-        vocab.read("/home/josef/IdeaProjects/music-graph/src/main/resources/vocab/musicgraph.ttl") ;
-        org.apache.jena.rdf.model.Model testDataModel = ModelFactory.createDefaultModel() ;
-        testDataModel.read("/home/josef/IdeaProjects/music-graph/src/main/resources/testdata/testdata.ttl") ;
-        org.apache.jena.rdf.model.Model joinedModel = ModelFactory.createUnion(vocab, testDataModel) ;
-        Dataset tdb = getDataset();
-        RDFConnection con = RDFConnectionFactory.connect(tdb);
-        Txn.executeWrite(tdb, () -> con.load(joinedModel));
-        con.close();
-
     }
 
     public Dataset getDataset() {
