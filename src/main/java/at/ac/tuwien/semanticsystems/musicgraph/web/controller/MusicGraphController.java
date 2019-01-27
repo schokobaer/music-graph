@@ -3,6 +3,7 @@ package at.ac.tuwien.semanticsystems.musicgraph.web.controller;
 import at.ac.tuwien.semanticsystems.musicgraph.service.TdbQueryService;
 import at.ac.tuwien.semanticsystems.musicgraph.service.WikiDataQueryService;
 import at.ac.tuwien.semanticsystems.musicgraph.web.Model.ArtistModel;
+import at.ac.tuwien.semanticsystems.musicgraph.web.Model.CountryModel;
 import at.ac.tuwien.semanticsystems.musicgraph.web.Model.GenreModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,13 @@ public class MusicGraphController {
         List<GenreModel> gernes = wikiDataQueryService.getFavouriteGenres();
         model.addAttribute("genres", gernes);
         return "favouriteGenres";
+    }
+
+    @RequestMapping("/favouriteCountries")
+    public String favouriteCountries(Model model) {
+        List<CountryModel> countries = wikiDataQueryService.getFavouriteCountries();
+        model.addAttribute("countries", countries);
+        return "favouriteCountries";
     }
 
     @RequestMapping("/uploadData")

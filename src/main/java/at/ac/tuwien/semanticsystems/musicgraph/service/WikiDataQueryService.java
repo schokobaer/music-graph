@@ -1,6 +1,7 @@
 package at.ac.tuwien.semanticsystems.musicgraph.service;
 
 import at.ac.tuwien.semanticsystems.musicgraph.web.Model.ArtistModel;
+import at.ac.tuwien.semanticsystems.musicgraph.web.Model.CountryModel;
 import at.ac.tuwien.semanticsystems.musicgraph.web.Model.GenreModel;
 import org.apache.jena.rdf.model.RDFNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,13 @@ public class WikiDataQueryService {
         return createGenreMap(result);
     }
 
+    public Map<String, String> getCountriesOfArtistByArtistWikiDataID(String artistWikiDataID) {
+        Map<String, String> params = new HashMap<>();
+        params.put("$paramArtist", "wd:" + artistWikiDataID);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_COUNTRIES_OF_ARTIST, params);
+        return createCountryMap(result);
+    }
+
     public List<GenreModel> getFavouriteGenres() {
         List<ArtistModel> artists = tdbQueryService.getTopFiveFavouriteArtists();
         Map<String, GenreModel> favouriteGenres = new HashMap<>();
@@ -48,6 +56,25 @@ public class WikiDataQueryService {
         }
         List<GenreModel> genreList = new ArrayList<>(favouriteGenres.values());
         genreList.sort(Comparator.comparing(GenreModel::getNumberOfFavouriteBandsWithGenre).reversed());
+        return genreList;
+    }
+
+    public List<CountryModel> getFavouriteCountries() {
+        List<ArtistModel> artists = tdbQueryService.getTopFiveFavouriteArtists();
+        Map<String, CountryModel> favouriteCountries = new HashMap<>();
+        for (ArtistModel artist : artists) {
+            Map<String, String> countries = getCountriesOfArtistByArtistWikiDataID(artist.getArtistWikiDataID());
+            for(String genreKey : countries.keySet()) {
+                if(favouriteCountries.containsKey(genreKey)) {
+                    CountryModel existingCountry = favouriteCountries.get(genreKey);
+                    existingCountry.setNumberOfFavouriteBandsInCountry(existingCountry.getNumberOfFavouriteBandsInCountry() + 1);
+                } else {
+                    favouriteCountries.put(genreKey, new CountryModel(countries.get(genreKey), countries.get(genreKey), genreKey, 1));
+                }
+            }
+        }
+        List<CountryModel> genreList = new ArrayList<>(favouriteCountries.values());
+        genreList.sort(Comparator.comparing(CountryModel::getNumberOfFavouriteBandsInCountry).reversed());
         return genreList;
     }
 
@@ -107,6 +134,15 @@ public class WikiDataQueryService {
 
         for (Map<String, RDFNode> row: queryResult) {
             map.put(row.get("genreLabel").asLiteral().getString(), row.get("genre").toString());
+        }
+        return map;
+    }
+
+    private Map<String, String> createCountryMap(List<Map<String, RDFNode>> queryResult) {
+        Map<String, String> map = new HashMap<>();
+
+        for (Map<String, RDFNode> row: queryResult) {
+            map.put(row.get("locationLabel").asLiteral().getString(), row.get("location").toString());
         }
         return map;
     }
