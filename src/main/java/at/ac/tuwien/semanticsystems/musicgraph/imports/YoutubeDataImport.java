@@ -19,6 +19,8 @@ import java.util.List;
 @Component("youtubeImport")
 public class YoutubeDataImport implements DataImport {
 
+    private boolean runing = false;
+    private float progress = 0;
     private YoutubeVideoService youtubeVideoService;
 
     @Value("${dataimport.youtube.max}")
@@ -32,40 +34,37 @@ public class YoutubeDataImport implements DataImport {
 
     @Override
     public Model importData(File file) {
-        Model dataModel = ModelFactory.createDefaultModel();
-
-        // TODO: RDFize the file
-
-
-        List<YoutubeVideoService.YoutubeVideo> videos = null;
-        try {
-            videos = youtubeVideoService.parseFile(file.getPath());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (this.runing) {
             return null;
         }
 
-        int count = 0;
-        for (YoutubeVideoService.YoutubeVideo video: videos) {
-            Resource res = dataModel.createResource();
-            res.addProperty(RDF.type, MusicGraph.YoutubeVideo);
-            res.addProperty(Schema.name, video.getVideoTitle());
-            res.addProperty(MusicGraph.clickedAt, video.getViewDate());
+        this.runing = true;
+        this.progress = 0;
 
-            count++;
-            if (count >= maxDataImport) {
-                break;
-            }
+        Model dataModel = null;
+        try {
+            dataModel = youtubeVideoService.parseHistoryFile(file, maxDataImport);
+        } catch (IOException e) {
+            return null;
         }
 
-
-        // TODO: Implement a limit to parse videos
+        // Find out amount
+        int amount = 0;
         ResIterator itr = dataModel.listResourcesWithProperty(RDF.type, MusicGraph.YoutubeVideo);
+        while (itr.hasNext()) {
+            amount++;
+            itr.nextResource();
+        }
+
+        int count = 0;
+        itr = dataModel.listResourcesWithProperty(RDF.type, MusicGraph.YoutubeVideo);
         while (itr.hasNext()) {
             Resource video = itr.nextResource();
 
             Resource song = youtubeVideoService.getMusicVideo(video, dataModel);
             if (song != null) {
+                count++;
+                this.progress = Float.parseFloat(count + "") / Float.parseFloat(amount + "");
                 continue;
             }
             Resource artist = youtubeVideoService.getArtist(video, dataModel);
@@ -82,8 +81,22 @@ public class YoutubeDataImport implements DataImport {
             }
 
 
+            count++;
+            this.progress = Float.parseFloat(count + "") / Float.parseFloat(amount + "");
         }
 
+        this.runing = false;
+
         return dataModel;
+    }
+
+    @Override
+    public boolean isProcessing() {
+        return this.runing;
+    }
+
+    @Override
+    public float getProgress() {
+        return this.progress;
     }
 }

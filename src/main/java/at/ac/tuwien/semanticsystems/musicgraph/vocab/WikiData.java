@@ -7,8 +7,8 @@ import org.apache.jena.rdf.model.Resource;
 
 public class WikiData {
 
-    private static final String wdt = "http://www.wikidata.org/prop/direct/";
-    private static final String wd = "http://www.wikidata.org/entity/";
+    public static final String wdt = "http://www.wikidata.org/prop/direct/";
+    public static final String wd = "http://www.wikidata.org/entity/";
     private static final Model baseModel = ModelFactory.createDefaultModel();
 
     /** Properties **/
