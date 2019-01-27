@@ -27,3 +27,4 @@ SELECT DISTINCT ?band ?bandLabel
      ?band rdfs:label ?bandLabel.
       filter (lang(?bandLabel) = 'de')
    }
+LIMIT 10

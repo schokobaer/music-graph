@@ -68,4 +68,14 @@ public class MusicGraphController {
         return "similarArtistsGenre";
     }
 
+    @RequestMapping("/similarArtistsCountry")
+    public String similarArtistsCountry(@RequestParam("artistName") String artistName, Model model) {
+        List<ArtistModel> artists = new ArrayList<>();
+        Map<String, String> map = wikiDataQueryService.getSimilarArtistsCountry(artistName);
+        for (String artist : map.keySet()) {
+            artists.add(new ArtistModel(artist, map.get(artist)));
+        }
+        model.addAttribute("artists", artists);
+        return "similarArtistsCountry";
+    }
 }
