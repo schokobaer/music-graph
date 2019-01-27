@@ -15,4 +15,8 @@ public interface DataImport {
      * @return Model with needed RDF data
      */
     Model importData(File file);
+
+    boolean isProcessing();
+
+    float getProgress();
 }

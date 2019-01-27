@@ -13,9 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -32,10 +34,15 @@ public class YoutubeVideoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(YoutubeVideoService.class);
 
-    public List<YoutubeVideo> parseFile(String path) throws IOException {
-        String fileContent = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
-        List<YoutubeVideo> videos = new LinkedList<>();
+    public Model parseHistoryFile(File file) throws IOException {
+        return parseHistoryFile(file, Integer.MAX_VALUE);
+    }
 
+    public Model parseHistoryFile(File file, int max) throws IOException {
+        String fileContent = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())), "UTF-8");
+        Model model = ModelFactory.createDefaultModel();
+
+        int count = 0;
         while (fileContent.contains(SEARCH_STRING)) {
             int posStart = fileContent.indexOf(SEARCH_STRING);
             posStart = fileContent.indexOf(">", posStart + SEARCH_STRING.length()) + 1;
@@ -47,13 +54,21 @@ public class YoutubeVideoService {
             posEnd = fileContent.indexOf("<", posStart);
             String viewDate = fileContent.substring(posStart, posEnd);
 
-            YoutubeVideo video = new YoutubeVideo(title, viewDate);
-            videos.add(video);
             fileContent = fileContent.substring(posEnd);
+
+            String uri = URLEncoder.encode(MusicGraph.entityBaseUri + title, "UTF-8");
+            Resource video = model.getResource(uri);
+            video.addProperty(RDF.type, MusicGraph.YoutubeVideo)
+                    .addProperty(Schema.name, title)
+                    .addProperty(MusicGraph.clickedAt, viewDate);
+
+            count++;
+            if (count >= max) {
+                break;
+            }
         }
 
-        return videos;
-
+        return model;
     }
 
 
@@ -274,32 +289,5 @@ public class YoutubeVideoService {
 
         return model;
     }
-
-    public static class YoutubeVideo {
-        private String videoTitle;
-        private String viewDate;
-
-        public YoutubeVideo(String videoTitle, String viewDate) {
-            this.videoTitle = videoTitle;
-            this.viewDate = viewDate;
-        }
-
-        public String getVideoTitle() {
-            return videoTitle;
-        }
-
-        public void setVideoTitle(String videoTitle) {
-            this.videoTitle = videoTitle;
-        }
-
-        public String getViewDate() {
-            return viewDate;
-        }
-
-        public void setViewDate(String viewDate) {
-            this.viewDate = viewDate;
-        }
-    }
-
 
 }

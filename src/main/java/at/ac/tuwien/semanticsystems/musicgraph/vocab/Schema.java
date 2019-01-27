@@ -7,7 +7,7 @@ import org.apache.jena.rdf.model.Resource;
 
 public class Schema {
 
-    private static final String baseUri = "http://schema.org/";
+    public static final String baseUri = "http://schema.org/";
     private static final Model baseModel = ModelFactory.createDefaultModel();
 
     /** Properties **/

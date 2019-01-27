@@ -27,4 +27,14 @@ public class AmazonDataImport implements DataImport {
             return null;
         }
     }
+
+    @Override
+    public boolean isProcessing() {
+        return false;
+    }
+
+    @Override
+    public float getProgress() {
+        return 0;
+    }
 }
