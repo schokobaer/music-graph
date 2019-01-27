@@ -2,6 +2,7 @@ package at.ac.tuwien.semanticsystems.musicgraph.service;
 
 import at.ac.tuwien.semanticsystems.musicgraph.web.Model.ArtistModel;
 import at.ac.tuwien.semanticsystems.musicgraph.web.Model.CountryModel;
+import at.ac.tuwien.semanticsystems.musicgraph.web.Model.DecadeModel;
 import at.ac.tuwien.semanticsystems.musicgraph.web.Model.GenreModel;
 import org.apache.jena.rdf.model.RDFNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,13 @@ public class WikiDataQueryService {
         return createCountryMap(result);
     }
 
+    public Map<String, String> getDecadesOfArtistByArtistWikiDataID(String artistWikiDataID) {
+        Map<String, String> params = new HashMap<>();
+        params.put("$paramArtist", "wd:" + artistWikiDataID);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_DECADES_OF_ARTIST, params);
+        return createDecadeMap(result);
+    }
+    
     public List<GenreModel> getFavouriteGenres() {
         List<ArtistModel> artists = tdbQueryService.getTopFiveFavouriteArtists();
         Map<String, GenreModel> favouriteGenres = new HashMap<>();
@@ -76,6 +84,25 @@ public class WikiDataQueryService {
         List<CountryModel> genreList = new ArrayList<>(favouriteCountries.values());
         genreList.sort(Comparator.comparing(CountryModel::getNumberOfFavouriteBandsInCountry).reversed());
         return genreList;
+    }
+
+    public List<DecadeModel> getFavouriteDecades() {
+        List<ArtistModel> artists = tdbQueryService.getTopFiveFavouriteArtists();
+        Map<String, DecadeModel> favouriteDecades = new HashMap<>();
+        for (ArtistModel artist : artists) {
+            Map<String, String> decades = getDecadesOfArtistByArtistWikiDataID(artist.getArtistWikiDataID());
+            for(String decadeKey : decades.keySet()) {
+                if(favouriteDecades.containsKey(decadeKey)) {
+                    DecadeModel existingDecade = favouriteDecades.get(decadeKey);
+                    existingDecade.setNumberOfFavouriteBandsInDecade(existingDecade.getNumberOfFavouriteBandsInDecade() + 1);
+                } else {
+                    favouriteDecades.put(decadeKey, new DecadeModel(decades.get(decadeKey), decadeKey, 1));
+                }
+            }
+        }
+        List<DecadeModel> decadesList = new ArrayList<>(favouriteDecades.values());
+        decadesList.sort(Comparator.comparing(DecadeModel::getNumberOfFavouriteBandsInDecade).reversed());
+        return decadesList;
     }
 
     public Map<String, String> getSimilarArtistsGenre(String artistName) {
@@ -143,6 +170,15 @@ public class WikiDataQueryService {
 
         for (Map<String, RDFNode> row: queryResult) {
             map.put(row.get("locationLabel").asLiteral().getString(), row.get("location").toString());
+        }
+        return map;
+    }
+
+    private Map<String, String> createDecadeMap(List<Map<String, RDFNode>> queryResult) {
+        Map<String, String> map = new HashMap<>();
+
+        for (Map<String, RDFNode> row: queryResult) {
+            map.put(row.get("decade").asLiteral().getString(), row.get("year").toString());
         }
         return map;
     }

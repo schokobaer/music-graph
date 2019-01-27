@@ -21,6 +21,7 @@ public class WikidataService {
     public static final String GET_ARTIST_FROM_GENRE = "query/wikidata.selectSimilarArtistGenre.rq";
     public static final String GET_GENRES_OF_ARTIST = "query/wikidata.getGenresOfArtist.rq";
     public static final String GET_COUNTRIES_OF_ARTIST = "query/wikidata.getCountriesOfArtist.rq";
+    public static final String GET_DECADES_OF_ARTIST = "query/wikidata.getDecadesOfArtist.rq";
     public static final String GET_ARTIST_FROM_COUNTRY = "query/wikidata.selectSimilarArtistCountry.rq";
     public static final String GET_ARTIST_FROM_DECADE = "query/wikidata.selectSimilarArtistDecade.rq";
 

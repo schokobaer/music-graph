@@ -30,6 +30,7 @@
                 <td>
                     <a class="btn btn-sm btn-primary loading_button" th:href="@{/similarArtistsGenre?artistName=} + ${artist.getArtistName()}" role="button">Genre</a>
                     <a class="btn btn-sm btn-warning loading_button" th:href="@{/similarArtistsCountry?artistName=} + ${artist.getArtistName()}" role="button">Country</a>
+                    <a class="btn btn-sm btn-info loading_button" th:href="@{/similarArtistsDecades?artistName=} + ${artist.getArtistName()}" role="button">Decade</a>
                 </td>
             </tr>
             </tbody>
