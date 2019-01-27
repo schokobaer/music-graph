@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +49,15 @@ public class MusicGraphController {
         return "uploadData";
     }
 
-    @RequestMapping("/similarArtists")
-    public String similarArtists(Model model) {
-        return "similarArtists";
+    @RequestMapping("/similarArtistsGenre")
+    public String similarArtistsGenre(@RequestParam("artistName") String artistName, Model model) {
+        List<ArtistModel> artists = new ArrayList<>();
+        Map<String, String> map = wikiDataQueryService.getSimilarArtistsGenre(artistName);
+        for (String artist : map.keySet()) {
+            artists.add(new ArtistModel(artist, map.get(artist)));
+        }
+        model.addAttribute("artists", artists);
+        return "similarArtistsGenre";
     }
 
 }

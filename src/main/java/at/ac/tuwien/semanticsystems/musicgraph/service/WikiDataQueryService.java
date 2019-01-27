@@ -94,7 +94,7 @@ public class WikiDataQueryService {
     }
 
     private Map<String, String> createArtistMap(List<Map<String, RDFNode>> queryResult) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new TreeMap<>();
 
         for (Map<String, RDFNode> row: queryResult) {
             map.put(row.get("bandLabel").asLiteral().getString(), row.get("band").toString());

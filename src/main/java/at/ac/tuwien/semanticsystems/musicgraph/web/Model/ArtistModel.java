@@ -18,6 +18,14 @@ public class ArtistModel {
         this.numberOfSongsListened = numberOfSongsListened;
     }
 
+    public ArtistModel(String artistName, String artistWikiDataUri) {
+        this.artistTdbUri = artistTdbUri;
+        this.artistName = artistName;
+        this.artistWikiDataUri = artistWikiDataUri;
+        this.artistWikiDataID = artistWikiDataID;
+        this.numberOfSongsListened = numberOfSongsListened;
+    }
+
     public String getArtistTdbUri() {
         return artistTdbUri;
     }

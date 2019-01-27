@@ -29,15 +29,17 @@
     </section>
 
     <div class="col-md-12 text-center align-items-center">
-        <a class="btn btn-lg btn-primary" href="/" role="button">Home</a>
-        <a class="btn btn-lg btn-primary" href="/favouriteArtists" role="button">Favourite artists</a>
-        <a class="btn btn-lg btn-primary" href="/favouriteGenres" role="button">Favourite genres</a>
+        <a class="btn btn-lg btn-primary loading_button" href="/" role="button">Home</a>
+        <a class="btn btn-lg btn-primary loading_button" href="/favouriteArtists" role="button">Favourite artists</a>
+        <a class="btn btn-lg btn-primary loading_button" href="/favouriteGenres" role="button">Favourite genres</a>
     </div>
     <div layout:fragment="content">
         <div class="text-center" style="margin-top: 3em">
             <a class="btn btn-lg btn-danger" href="/uploadData" role="button">Upload data</a>
         </div>
     </div>
+</div>
+<div id="spinner" class="spinner" style="display:none;">
 </div>
 </body>
 </html>
