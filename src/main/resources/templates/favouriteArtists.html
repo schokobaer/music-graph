@@ -9,24 +9,36 @@
 <body>
 <div layout:fragment="content">
     <div class="jumbotron" style="margin-top: 1em">
+        <h2>Top 5 favourite artists</h2>
         <table class="table table-bordered" th:if="${!artists.empty}">
             <thead>
             <tr>
                 <th>Artist</th>
-                <th>Best known song</th>
-                <th>Information</th>
+                <th>Wiki Data URI</th>
+                <th>Number of Songs listened of artist</th>
+                <th>Similar artists based on</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="artist : ${artists}">
-                <td><strong th:text="${artist.getName()}"></strong></td>
-                <td><strong th:text="${artist.getBestKnownSong()}"></strong></td>
-                <td><a th:href="${artist.getUrl()}"><strong th:text="${artist.getUrl()}"> </strong></a></td>
+                <td><strong th:text="${artist.getArtistName()}"></strong></td>
+                <td><a th:href="${artist.getArtistWikiDataUri()}"><strong th:text="${artist.getArtistWikiDataUri()}"> </strong></a></td>
+                <td><strong th:text="${artist.getNumberOfSongsListened()}"></strong></td>
+                <!--<td><div class="popup" onclick="myFunction()">Click me to toggle the popup!-->
+                    <!--<span class="popuptext" id="myPopup">A Simple Popup!</span>-->
+                <!--</div></td>-->
+                <td>
+                    <a class="btn btn-sm btn-primary loading_button" th:href="@{/similarArtistsGenre?artistName=} + ${artist.getArtistName()}" role="button">Genre</a>
+                    <a class="btn btn-sm btn-warning loading_button" th:href="@{/similarArtistsCountry?artistName=} + ${artist.getArtistName()}" role="button">Country</a>
+                    <a class="btn btn-sm btn-info loading_button" th:href="@{/similarArtistsDecades?artistName=} + ${artist.getArtistName()}" role="button">Decade</a>
+                </td>
             </tr>
             </tbody>
         </table>
         <strong th:if="${artists.empty}">No artists available!</strong>
     </div>
 </div>
+
+
 </body>
 </html>

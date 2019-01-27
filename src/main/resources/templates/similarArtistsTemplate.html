@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="index">
+<head>
+    <title>Similar Artists based on the genre</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="jumbotron" style="margin-top: 1em">
+        <div layout:fragment="content_inner">
+        </div>
+        <table class="table table-bordered" th:if="${!artists.empty}">
+            <thead>
+            <tr>
+                <th>Artist</th>
+                <th>Wiki Data URI</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="artist : ${artists}">
+                <td><strong th:text="${artist.getArtistName()}"></strong></td>
+                <td><a th:href="${artist.getArtistWikiDataUri()}"><strong th:text="${artist.getArtistWikiDataUri()}"> </strong></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <strong th:if="${artists.empty}">No artists available!</strong>
+</div>
+</body>
+</html>

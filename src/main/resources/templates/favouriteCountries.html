@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="index">
+<head>
+    <title>Countries with favourite artists</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="jumbotron" style="margin-top: 1em">
+        <h2>Countries with favourite artists</h2>
+        <table class="table table-bordered" th:if="${!countries.empty}">
+            <thead>
+            <tr>
+                <th>Country</th>
+                <th>Wiki Data URI</th>
+                <th>Number of favourite artists of this country</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="country : ${countries}">
+                <td><strong th:text="${country.getCountryName()}"></strong></td>
+                <td><a th:href="${country.getCountryWikiDataUri()}"><strong th:text="${country.getCountryWikiDataUri()}"> </strong></a></td>
+                <td><strong th:text="${country.getNumberOfFavouriteBandsInCountry()}"></strong></td>
+            </tr>
+            </tbody>
+        </table>
+        <strong th:if="${countries.empty}">No countries available!</strong>
+    </div>
+</div>
+</body>
+</html>

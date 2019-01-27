@@ -1,0 +1,117 @@
+@prefix track: <http://semantics.tuwien.ac.at/group4/tracks/> .
+@prefix artist: <http://semantics.tuwien.ac.at/group4/artists/> .
+@prefix semantic: <http://semantics.tuwien.ac.at/group4#> .
+@prefix schema: <http://schema.org/> .
+@prefix wd: <http://www.wikidata.org/entity/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+track:rusted%20from%20the%20rain-billy%20talent
+a semantic:AmazonMusicSong ;
+a semantic:SpotifyMusicSong ;
+schema:Duration "253000"^^xsd:integer ;
+schema:creditedTo artist:Billy%20Talent ;
+semantic:listenedTo "2018-07-12 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-13 21:25:02 GMT"^^xsd:timestamp .
+
+artist:Billy%20Talent
+a semantic:Artist ;
+schema:sameAs wd:Q154815 .
+
+track:master%20of%20puppets-metallica
+a semantic:AmazonMusicSong ;
+a semantic:YoutubeVideo ;
+schema:Duration "253000"^^xsd:integer ;
+schema:creditedTo artist:Metallica ;
+semantic:listenedTo "2018-07-12 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-13 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-14 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-15 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-16 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-17 21:25:02 GMT"^^xsd:timestamp .
+
+track:nothing%20else%20matters-metallica
+a semantic:AmazonMusicSong ;
+a semantic:YoutubeVideo ;
+schema:Duration "253000"^^xsd:integer ;
+schema:creditedTo artist:Metallica ;
+semantic:listenedTo "2018-07-11 21:25:02 GMT"^^xsd:timestamp .
+
+artist:Metallica
+a semantic:Artist ;
+schema:sameAs wd:Q15920 .
+
+track:marie%20marie-amsterdam
+a semantic:AmazonMusicSong ;
+a semantic:YoutubeVideo ;
+schema:Duration "253000"^^xsd:integer ;
+schema:creditedTo artist:Amsterdam ;
+semantic:listenedTo "2018-07-11 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-12 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-13 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-14 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-15 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-16 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-17 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-18 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-19 21:25:02 GMT"^^xsd:timestamp .
+
+artist:Amsterdam
+a semantic:Artist ;
+schema:sameAs wd:Q4748822 .
+
+track:columbo-wanda
+a semantic:AmazonMusicSong ;
+a semantic:YoutubeVideo ;
+schema:Duration "253000"^^xsd:integer ;
+schema:creditedTo artist:Wanda ;
+semantic:listenedTo "2018-07-12 21:25:02 GMT"^^xsd:timestamp .
+
+artist:Wanda
+a semantic:Artist ;
+schema:sameAs wd:Q18632647 .
+
+track:80%20millionen-max%20giesinger
+a semantic:AmazonMusicSong ;
+a semantic:YoutubeVideo ;
+schema:Duration "253000"^^xsd:integer ;
+schema:creditedTo artist:Max%20Giesinger ;
+semantic:listenedTo "2018-07-12 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-13 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-14 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-15 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-16 21:25:02 GMT"^^xsd:timestamp .
+
+artist:Max%20Giesinger
+a semantic:Artist ;
+schema:sameAs wd:Q1912582 .
+
+track:californication-red%20hot%20chili%20peppers
+a semantic:AmazonMusicSong ;
+a semantic:YoutubeVideo ;
+schema:Duration "253000"^^xsd:integer ;
+schema:creditedTo artist:Red%20Hot%20Chili%20Peppers ;
+semantic:listenedTo "2018-07-11 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-12 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-13 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-14 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-15 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-16 21:25:02 GMT"^^xsd:timestamp .
+
+track:snow-red%20hot%20chili%20peppers
+a semantic:AmazonMusicSong ;
+a semantic:YoutubeVideo ;
+schema:Duration "253000"^^xsd:integer ;
+schema:creditedTo artist:Red%20Hot%20Chili%20Peppers ;
+semantic:listenedTo "2018-07-11 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-12 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-13 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-14 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-15 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-16 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-17 21:25:02 GMT"^^xsd:timestamp ;
+semantic:listenedTo "2018-07-18 21:25:02 GMT"^^xsd:timestamp .
+
+artist:Red%20Hot%20Chili%20Peppers
+a semantic:Artist ;
+schema:sameAs wd:Q10708 .
+

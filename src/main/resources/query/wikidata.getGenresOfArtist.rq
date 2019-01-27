@@ -8,12 +8,9 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX bd: <http://www.bigdata.com/rdf#>
 PREFIX schema: <http://www.schema.org/>
 
-SELECT DISTINCT ?band ?bandLabel  WHERE {
-      ?Musikgenre wdt:P31 wd:Q188451.
-      $paramArtist wdt:P136 ?musikgenre.
-      ?band wdt:P136 ?musikgenre.
-      ?band wdt:P1902 ?spotifyID.
-      ?band rdfs:label ?bandLabel.
-      filter (lang(?bandLabel) = 'de')
+ SELECT DISTINCT ?genreLabel ?genre WHERE {
+   ?genre wdt:P31 wd:Q188451.
+   $paramArtist wdt:P136 ?genre.
+   ?genre rdfs:label ?genreLabel.
+   filter (lang(?genreLabel) = 'de')
  }
-LIMIT 10

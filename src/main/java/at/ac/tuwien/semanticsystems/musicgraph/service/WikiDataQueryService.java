@@ -1,14 +1,14 @@
 package at.ac.tuwien.semanticsystems.musicgraph.service;
 
-import org.apache.jena.rdf.model.Model;
+import at.ac.tuwien.semanticsystems.musicgraph.web.Model.ArtistModel;
+import at.ac.tuwien.semanticsystems.musicgraph.web.Model.CountryModel;
+import at.ac.tuwien.semanticsystems.musicgraph.web.Model.DecadeModel;
+import at.ac.tuwien.semanticsystems.musicgraph.web.Model.GenreModel;
 import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class WikiDataQueryService {
@@ -18,7 +18,92 @@ public class WikiDataQueryService {
     private WikidataService wikidataService;
     @Autowired
     private MusicbrainzService musicbrainzService;
+    @Autowired
+    private TdbQueryService tdbQueryService;
 
+    public Map<String, String> getGenresOfArtistByName(String artistName) {
+        Map<String, String> params = getQueryParamWikiDataID(artistName);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_GENRES_OF_ARTIST, params);
+        return createGenreMap(result);
+    }
+
+    public Map<String, String> getGenresOfArtistByArtistWikiDataID(String artistWikiDataID) {
+        Map<String, String> params = new HashMap<>();
+        params.put("$paramArtist", "wd:" + artistWikiDataID);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_GENRES_OF_ARTIST, params);
+        return createGenreMap(result);
+    }
+
+    public Map<String, String> getCountriesOfArtistByArtistWikiDataID(String artistWikiDataID) {
+        Map<String, String> params = new HashMap<>();
+        params.put("$paramArtist", "wd:" + artistWikiDataID);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_COUNTRIES_OF_ARTIST, params);
+        return createCountryMap(result);
+    }
+
+    public Map<String, String> getDecadesOfArtistByArtistWikiDataID(String artistWikiDataID) {
+        Map<String, String> params = new HashMap<>();
+        params.put("$paramArtist", "wd:" + artistWikiDataID);
+        List<Map<String, RDFNode>> result = wikidataService.querySelect(wikidataService.GET_DECADES_OF_ARTIST, params);
+        return createDecadeMap(result);
+    }
+    
+    public List<GenreModel> getFavouriteGenres() {
+        List<ArtistModel> artists = tdbQueryService.getTopFiveFavouriteArtists();
+        Map<String, GenreModel> favouriteGenres = new HashMap<>();
+        for (ArtistModel artist : artists) {
+            Map<String, String> genres = getGenresOfArtistByArtistWikiDataID(artist.getArtistWikiDataID());
+            for(String genreKey : genres.keySet()) {
+                if(favouriteGenres.containsKey(genreKey)) {
+                    GenreModel existingGenre = favouriteGenres.get(genreKey);
+                    existingGenre.setNumberOfFavouriteBandsWithGenre(existingGenre.getNumberOfFavouriteBandsWithGenre() + 1);
+                } else {
+                    favouriteGenres.put(genreKey, new GenreModel(genres.get(genreKey), genres.get(genreKey), genreKey, 1));
+                }
+            }
+        }
+        List<GenreModel> genreList = new ArrayList<>(favouriteGenres.values());
+        genreList.sort(Comparator.comparing(GenreModel::getNumberOfFavouriteBandsWithGenre).reversed());
+        return genreList;
+    }
+
+    public List<CountryModel> getFavouriteCountries() {
+        List<ArtistModel> artists = tdbQueryService.getTopFiveFavouriteArtists();
+        Map<String, CountryModel> favouriteCountries = new HashMap<>();
+        for (ArtistModel artist : artists) {
+            Map<String, String> countries = getCountriesOfArtistByArtistWikiDataID(artist.getArtistWikiDataID());
+            for(String genreKey : countries.keySet()) {
+                if(favouriteCountries.containsKey(genreKey)) {
+                    CountryModel existingCountry = favouriteCountries.get(genreKey);
+                    existingCountry.setNumberOfFavouriteBandsInCountry(existingCountry.getNumberOfFavouriteBandsInCountry() + 1);
+                } else {
+                    favouriteCountries.put(genreKey, new CountryModel(countries.get(genreKey), countries.get(genreKey), genreKey, 1));
+                }
+            }
+        }
+        List<CountryModel> genreList = new ArrayList<>(favouriteCountries.values());
+        genreList.sort(Comparator.comparing(CountryModel::getNumberOfFavouriteBandsInCountry).reversed());
+        return genreList;
+    }
+
+    public List<DecadeModel> getFavouriteDecades() {
+        List<ArtistModel> artists = tdbQueryService.getTopFiveFavouriteArtists();
+        Map<String, DecadeModel> favouriteDecades = new HashMap<>();
+        for (ArtistModel artist : artists) {
+            Map<String, String> decades = getDecadesOfArtistByArtistWikiDataID(artist.getArtistWikiDataID());
+            for(String decadeKey : decades.keySet()) {
+                if(favouriteDecades.containsKey(decadeKey)) {
+                    DecadeModel existingDecade = favouriteDecades.get(decadeKey);
+                    existingDecade.setNumberOfFavouriteBandsInDecade(existingDecade.getNumberOfFavouriteBandsInDecade() + 1);
+                } else {
+                    favouriteDecades.put(decadeKey, new DecadeModel(decades.get(decadeKey), decadeKey, 1));
+                }
+            }
+        }
+        List<DecadeModel> decadesList = new ArrayList<>(favouriteDecades.values());
+        decadesList.sort(Comparator.comparing(DecadeModel::getNumberOfFavouriteBandsInDecade).reversed());
+        return decadesList;
+    }
 
     public Map<String, String> getSimilarArtistsGenre(String artistName) {
         Map<String, String> params = getQueryParamWikiDataID(artistName);
@@ -63,7 +148,7 @@ public class WikiDataQueryService {
     }
 
     private Map<String, String> createArtistMap(List<Map<String, RDFNode>> queryResult) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new TreeMap<>();
 
         for (Map<String, RDFNode> row: queryResult) {
             map.put(row.get("bandLabel").asLiteral().getString(), row.get("band").toString());
@@ -71,8 +156,47 @@ public class WikiDataQueryService {
         return map;
     }
 
+    private Map<String, String> createGenreMap(List<Map<String, RDFNode>> queryResult) {
+        Map<String, String> map = new HashMap<>();
+
+        for (Map<String, RDFNode> row: queryResult) {
+            map.put(row.get("genreLabel").asLiteral().getString(), row.get("genre").toString());
+        }
+        return map;
+    }
+
+    private Map<String, String> createCountryMap(List<Map<String, RDFNode>> queryResult) {
+        Map<String, String> map = new HashMap<>();
+
+        for (Map<String, RDFNode> row: queryResult) {
+            map.put(row.get("locationLabel").asLiteral().getString(), row.get("location").toString());
+        }
+        return map;
+    }
+
+    private Map<String, String> createDecadeMap(List<Map<String, RDFNode>> queryResult) {
+        Map<String, String> map = new HashMap<>();
+
+        for (Map<String, RDFNode> row: queryResult) {
+            map.put(row.get("decade").asLiteral().getString(), row.get("year").toString());
+        }
+        return map;
+    }
+
     public void setWikidataServices(WikidataService wikidataService, MusicbrainzService musicbrainzService) {
         this.wikidataService = wikidataService;
         this.musicbrainzService = musicbrainzService;
+    }
+
+    private <K, V extends Comparable<? super V>> Map<K, V> sortMapByValue(Map<K, V> map) {
+        List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+
+        Map<K, V> result = new LinkedHashMap<>();
+        for (Map.Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
     }
 }

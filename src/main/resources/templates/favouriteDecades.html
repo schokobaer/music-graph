@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="index">
+<head>
+    <title>Favourite Decades</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="jumbotron" style="margin-top: 1em">
+        <h2>Favourite decades</h2>
+        <table class="table table-bordered" th:if="${!decades.empty}">
+            <thead>
+            <tr>
+                <th>Decade</th>
+                <th>Number of favourite bands with this decade</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="decade : ${decades}">
+                <td><strong th:text="${decade.getDecadeName()}"></strong></td>
+                <td><strong th:text="${decade.getNumberOfFavouriteBandsInDecade()}"></strong></td>
+            </tr>
+            </tbody>
+        </table>
+        <strong th:if="${decades.empty}">No decades available!</strong>
+    </div>
+</div>
+</body>
+</html>

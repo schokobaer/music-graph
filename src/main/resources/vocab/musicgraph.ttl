@@ -17,7 +17,7 @@
 
 ###  http://semantics.tuwien.ac.at/group4#clickedAt
 :clickedAt rdf:type owl:ObjectProperty ;
-           owl:equivalentProperty :listenedAt ;
+           owl:equivalentProperty :listenedTo ;
            rdf:type owl:FunctionalProperty ;
            rdfs:domain :YoutubeVideo ;
            rdfs:range [ rdf:type owl:Restriction ;
@@ -46,8 +46,8 @@
            rdfs:label "is similar " .
 
 
-###  http://semantics.tuwien.ac.at/group4#listenedAt
-:listenedAt rdf:type owl:ObjectProperty ,
+###  http://semantics.tuwien.ac.at/group4#listenedTo
+:listenedTo rdf:type owl:ObjectProperty ,
                      owl:FunctionalProperty ;
             rdfs:domain :Song ;
             rdfs:range [ rdf:type owl:Restriction ;
@@ -55,7 +55,7 @@
                          owl:someValuesFrom xsd:dateTimeStamp
                        ] ;
             rdfs:comment "Timestamp of when a song was listened" ;
-            rdfs:label "listenedAt" .
+            rdfs:label "listenedTo" .
 
 
 ###  http://semantics.tuwien.ac.at/group4#numberListenings

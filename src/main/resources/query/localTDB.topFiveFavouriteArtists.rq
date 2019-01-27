@@ -1,0 +1,15 @@
+PREFIX semantic: <http://semantics.tuwien.ac.at/group4#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX schema: <http://schema.org/>
+
+SELECT ?artist ?artistWikiDataUri (COUNT(?listened) AS ?numberOfSongsListened) WHERE {
+    ?song rdf:type ?type .
+    ?type rdfs:subClassOf* semantic:Song .
+    ?song schema:creditedTo ?artist .
+    ?artist schema:sameAs ?artistWikiDataUri .
+    ?song semantic:listenedTo ?listened .
+}
+GROUP BY ?artist ?artistWikiDataUri
+ORDER BY DESC(?numberOfSongsListened)
+LIMIT 5

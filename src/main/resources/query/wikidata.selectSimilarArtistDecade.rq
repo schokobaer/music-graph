@@ -16,3 +16,4 @@ SELECT DISTINCT ?band ?bandLabel ?year WHERE {
   ?band rdfs:label ?bandLabel.
   FILTER((LANG(?bandLabel)) = "de" && ( 10 * (xsd:integer(YEAR(?year) / 10))) = ( 10 * (xsd:integer(YEAR(?queryYear) / 10))))
 }
+LIMIT 10
