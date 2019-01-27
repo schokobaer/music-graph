@@ -1,5 +1,6 @@
 package at.ac.tuwien.semanticsystems.musicgraph.service;
 
+import at.ac.tuwien.semanticsystems.musicgraph.imports.YoutubeDataImport;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.MusicGraph;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.Schema;
 import at.ac.tuwien.semanticsystems.musicgraph.vocab.WikiData;
@@ -11,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -20,6 +22,7 @@ import java.util.List;
 public class YoutubeVideoServiceTest {
 
     private YoutubeVideoService youtubeVideoService;
+
 
     @Before
     public void setup() {
@@ -32,7 +35,7 @@ public class YoutubeVideoServiceTest {
         youtubeVideoService.setHtmlJsonLdExtractor(htmlJsonLdExtractor);
         youtubeVideoService.setMusicbrainzService(musicbrainzService);
     }
-
+/*
     @Test
     public void getOneYoutubeSong() {
         Model model = ModelFactory.createDefaultModel();
@@ -127,20 +130,14 @@ public class YoutubeVideoServiceTest {
         Model result = youtubeVideoService.getMusicVideos(model);
         result.write(System.out, "TURTLE");
     }
-
+*/
     @Test
-    public void testWithYoutubeHistoryFileForArtists() throws IOException {
-        List<YoutubeVideoService.YoutubeVideo> videos = youtubeVideoService.parseFile("resources/wiedergabeverlauf.html");
+    public void testDataImporter() throws IOException {
 
-        Model model = ModelFactory.createDefaultModel();
-        for (YoutubeVideoService.YoutubeVideo video: videos) {
-            Resource res = model.createResource();
-            res.addProperty(RDF.type, MusicGraph.YoutubeVideo);
-            res.addProperty(Schema.name, video.getVideoTitle());
-            res.addProperty(MusicGraph.clickedAt, video.getViewDate());
-        }
-
-        Model result = youtubeVideoService.getArtists(model);
+        File file = new File("resources/youtube_2.html");
+        YoutubeDataImport dataImport = new YoutubeDataImport();
+        dataImport.setYoutubeVideoService(youtubeVideoService);
+        Model result = dataImport.importData(file);
 
         int sum = 0;
         StmtIterator itr = result.listStatements(null, RDF.type, MusicGraph.Artist);
@@ -152,6 +149,7 @@ public class YoutubeVideoServiceTest {
 
         result.write(System.out, "TURTLE");
     }
+    /*
 
     @Test
     public void getAllDataWithArtistsAndSongs() throws IOException {
@@ -250,6 +248,6 @@ public class YoutubeVideoServiceTest {
             System.out.println(song.getProperty(Schema.name).getString() + ":" + song.getProperty(MusicGraph.listenedAt));
         }
         System.out.println("Found Songs:" + sum);
-    }
+    } */
 
 }
